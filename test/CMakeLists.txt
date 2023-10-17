@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(AudioPluginTest)
+project(BasicSynthTest)
 
 enable_testing()
 
@@ -17,7 +17,7 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-        AudioPlugin
+        BasicSynth
         GTest::gtest_main
 )
 

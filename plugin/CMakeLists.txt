@@ -1,16 +1,18 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(AudioPlugin VERSION 0.1.0)
+project(BasicSynth VERSION 0.1.0)
+
+set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/BasicSynth")
 
 juce_add_plugin(${PROJECT_NAME}
-    COMPANY xx
+    COMPANY fp
     IS_SYNTH FALSE
     NEEDS_MIDI_INPUT FALSE
     NEEDS_MIDI_OUTPUT FALSE
-    PLUGIN_MANUFACTURER_CODE XXXX
-    PLUGIN_CODE AUDI
-    FORMATS VST3 AU Standalone
-    PRODUCT_NAME "YourPluginName"
+    PLUGIN_MANUFACTURER_CODE FABP
+    PLUGIN_CODE BS-1
+    FORMATS AU VST3
+    PRODUCT_NAME "BasicSynth"
 )
 
 target_sources(${PROJECT_NAME}
@@ -21,7 +23,7 @@ target_sources(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-        include/YourPluginName
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/BasicSynth
 )
 
 target_link_libraries(${PROJECT_NAME}
