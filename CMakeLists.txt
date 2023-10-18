@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(BasicSynth)
+project(SimpleSynthRoot)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 set(CPM_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
-set (JUCE_COPY_PLUGIN_AFTER_BUILD TRUE)
 
 file(
   DOWNLOAD
