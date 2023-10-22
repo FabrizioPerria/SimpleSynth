@@ -8,7 +8,7 @@ SpaceAfterCStyleCast: 'true'
 SpaceAfterLogicalNot: 'false'
 SpaceAfterTemplateKeyword: 'false'
 SpaceBeforeAssignmentOperators: 'true'
-SpaceBeforeParens: Always
+SpaceBeforeParens: ControlStatements
 SpacesInAngles: 'false'
 SpacesInCStyleCastParentheses: 'true'
 SpacesInParentheses: 'false'

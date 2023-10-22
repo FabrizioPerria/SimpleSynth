@@ -15,12 +15,14 @@ juce_add_plugin(${PROJECT_NAME}
     COMPANY_NAME "fp"
 )
 
+juce_generate_juce_header(${PROJECT_NAME})
+
 target_sources(${PROJECT_NAME}
     PRIVATE
         source/PluginEditor.cpp
         source/PluginProcessor.cpp
+        source/SynthVoice.cpp
 )
-
 target_include_directories(${PROJECT_NAME}
     PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}
@@ -47,4 +49,3 @@ target_compile_definitions(${PROJECT_NAME}
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_options(${PROJECT_NAME} PUBLIC "-Wl,-weak_reference_mismatches,weak")
 
-juce_generate_juce_header(${PROJECT_NAME})
