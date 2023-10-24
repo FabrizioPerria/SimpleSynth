@@ -194,20 +194,20 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 	juce::AudioProcessorValueTreeState::ParameterLayout paramLayout;
 	juce::StringArray waveTypes{"Sine", "Saw", "Square"};
 	int defaultIndexWaveType = 0;
-	paramLayout.add(
-		std::make_unique<juce::AudioParameterChoice>("OSC_WAVETYPE", "Oscillator", waveTypes, defaultIndexWaveType));
+	paramLayout.add(std::make_unique<juce::AudioParameterChoice>(ParameterID{"OSC_WAVETYPE", 1}, "Oscillator",
+																 waveTypes, defaultIndexWaveType));
 
-	paramLayout.add(
-		std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", NormalisableRange<float>{0.1f, 1.0f}, 0.1f));
-	paramLayout.add(
-		std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", NormalisableRange<float>{0.1f, 1.0f}, 0.1f));
-	paramLayout.add(
-		std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", NormalisableRange<float>{0.1f, 1.0f}, 1.0f));
-	paramLayout.add(
-		std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", NormalisableRange<float>{0.1f, 3.0f}, 0.4f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"ATTACK", 1}, "Attack",
+																NormalisableRange<float>{0.1f, 1.0f}, 0.1f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"DECAY", 1}, "Decay",
+																NormalisableRange<float>{0.1f, 1.0f}, 0.1f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"SUSTAIN", 1}, "Sustain",
+																NormalisableRange<float>{0.1f, 1.0f}, 1.0f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"RELEASE", 1}, "Release",
+																NormalisableRange<float>{0.1f, 3.0f}, 0.4f));
 
-	paramLayout.add(
-		std::make_unique<juce::AudioParameterFloat>("GAIN", "Gain", NormalisableRange<float>{0.1f, 1.0f}, 0.5f));
-	//
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"GAIN", 1}, "Gain",
+																NormalisableRange<float>{0.1f, 1.0f}, 0.5f));
+
 	return paramLayout;
 }
