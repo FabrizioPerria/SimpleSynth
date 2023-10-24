@@ -1,10 +1,8 @@
+#include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "SynthSound.h"
 #include "SynthVoice.h"
-#include "juce_core/system/juce_PlatformDefs.h"
-#include <JuceHeader.h>
-#include <_types/_uint32_t.h>
 
 //==============================================================================
 AudioPluginAudioProcessor::AudioPluginAudioProcessor()
@@ -15,7 +13,8 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
 #endif
 						 .withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
-	  )
+						 ),
+	  apvts(*this, nullptr, "PARAMETERS", createParams())
 {
 	synth.addSound(new SynthSound());
 	synth.addVoice(new SynthVoice());
@@ -96,12 +95,12 @@ void AudioPluginAudioProcessor::prepareToPlay(double sampleRate, int samplesPerB
 {
 	synth.setCurrentPlaybackSampleRate(sampleRate);
 	for (auto i = 0; i < synth.getNumVoices(); ++i)
-	{
-		if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
 		{
-			voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+			if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
+				{
+					voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+				}
 		}
-	}
 }
 
 void AudioPluginAudioProcessor::releaseResources()
@@ -141,16 +140,16 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
 	auto totalNumInputChannels = getTotalNumInputChannels();
 
 	for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-	{
-		buffer.clear(i, 0, buffer.getNumSamples());
-	}
+		{
+			buffer.clear(i, 0, buffer.getNumSamples());
+		}
 
 	for (auto i = 0; i < synth.getNumVoices(); ++i)
-	{
-		if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
 		{
+			if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
+				{
+				}
 		}
-	}
 
 	synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
@@ -188,4 +187,27 @@ void AudioPluginAudioProcessor::setStateInformation(const void *data, int sizeIn
 juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter()
 {
 	return new AudioPluginAudioProcessor();
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::createParams()
+{
+	juce::AudioProcessorValueTreeState::ParameterLayout paramLayout;
+	juce::StringArray waveTypes{"Sine", "Saw", "Square"};
+	int defaultIndexWaveType = 0;
+	paramLayout.add(
+		std::make_unique<juce::AudioParameterChoice>("OSC_WAVETYPE", "Oscillator", waveTypes, defaultIndexWaveType));
+
+	paramLayout.add(
+		std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", NormalisableRange<float>{0.1f, 1.0f}, 0.1f));
+	paramLayout.add(
+		std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", NormalisableRange<float>{0.1f, 1.0f}, 0.1f));
+	paramLayout.add(
+		std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", NormalisableRange<float>{0.1f, 1.0f}, 1.0f));
+	paramLayout.add(
+		std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", NormalisableRange<float>{0.1f, 3.0f}, 0.4f));
+
+	paramLayout.add(
+		std::make_unique<juce::AudioParameterFloat>("GAIN", "Gain", NormalisableRange<float>{0.1f, 1.0f}, 0.5f));
+	//
+	return paramLayout;
 }
