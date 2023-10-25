@@ -46,6 +46,7 @@ target_compile_definitions(${PROJECT_NAME}
         JUCE_VST3_CAN_REPLACE_VST2=0
         JUCE_SILENCE_XCODE_15_LINKER_WARNING=1
 )
+
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_link_options(${PROJECT_NAME} PUBLIC "-Wl,-weak_reference_mismatches,weak")
 
