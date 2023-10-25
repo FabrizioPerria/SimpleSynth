@@ -211,3 +211,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 
 	return paramLayout;
 }
+
+juce::AudioProcessorValueTreeState &AudioPluginAudioProcessor::getApvts()
+{
+	return apvts;
+}

@@ -44,6 +44,8 @@ class AudioPluginAudioProcessor : public juce::AudioProcessor
 
 	juce::AudioProcessorValueTreeState::ParameterLayout createParams();
 
+	juce::AudioProcessorValueTreeState &getApvts();
+
   private:
 	juce::Synthesiser synth;
 	juce::AudioProcessorValueTreeState apvts;
