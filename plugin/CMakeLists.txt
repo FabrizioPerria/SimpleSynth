@@ -10,22 +10,28 @@ juce_add_plugin(${PROJECT_NAME}
     NEEDS_MIDI_OUTPUT FALSE
     PLUGIN_MANUFACTURER_CODE FABP
     PLUGIN_CODE BS-1
-    FORMATS AU VST3
+    FORMATS AU VST3 Standalone
     PRODUCT_NAME ${PROJECT_NAME}
     COMPANY_NAME "fp"
 )
 
+get_target_property(juce_library_code ${PROJECT_NAME} JUCE_GENERATED_SOURCES_DIRECTORY)
 juce_generate_juce_header(${PROJECT_NAME})
+
+set_target_properties(${PROJECT_NAME} PROPERTIES JUCE_LIBRARY_CODE ${juce_library_code})
 
 target_sources(${PROJECT_NAME}
     PRIVATE
         source/PluginEditor.cpp
         source/PluginProcessor.cpp
         source/SynthVoice.cpp
+        source/data/envelopeData.cpp
+        source/ui/envelopeComponent.cpp
 )
+
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}
+    ${CMAKE_CURRENT_SOURCE_DIR}/source
     ${LIB_DIR}/tracer
 )
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "ui/envelopeComponent.h"
 
 //==============================================================================
 class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
@@ -17,15 +18,6 @@ class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
 	juce::ComboBox waveType;
 	std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> waveTypeAttachment;
 
-	juce::Slider attackSlider;
-	std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attackAttachment;
-	juce::Slider decaySlider;
-	std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> decayAttachment;
-	juce::Slider sustainSlider;
-	std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> sustainAttachment;
-	juce::Slider releaseSlider;
-	std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> releaseAttachment;
-
 	juce::Slider gainSlider;
 	std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
 
@@ -33,7 +25,7 @@ class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
 	// access the processor object that created it.
 	AudioPluginAudioProcessor &processorRef;
 
-	void setupSlider(juce::Slider &slider);
+	EnvelopeComponent envelopeComponent;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessorEditor)
 };

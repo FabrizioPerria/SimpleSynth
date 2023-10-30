@@ -9,13 +9,12 @@ endmacro()
 
 project(SimpleSynthTest VERSION 0.1.0)
 
-set(LIBS_TO_TEST "")
-list(APPEND LIBS_TO_TEST "SimpleSynth")
+set(LIBS_TO_TEST "SimpleSynth")
 
 enable_testing()
+add_executable(${PROJECT_NAME})
 
-juce_add_console_app(${PROJECT_NAME})
-
+get_target_property(SIMPLE_SYNTH_JUCE_HEADER SimpleSynth JUCE_LIBRARY_CODE)
 target_sources(${PROJECT_NAME}
     PRIVATE
     source/AudioProcessorTest.cpp
@@ -25,6 +24,7 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${INCLUDE_LIB_DIRS}
         ${JUCE_SOURCE_DIR}/modules
+        ${SIMPLE_SYNTH_JUCE_HEADER}
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -33,7 +33,13 @@ target_link_libraries(${PROJECT_NAME}
         GTest::gtest_main
 )
 
-juce_generate_juce_header(${PROJECT_NAME})
+target_compile_definitions(${PROJECT_NAME}
+    PUBLIC
+        JUCE_WEB_BROWSER=0
+        JUCE_CURL=0
+        JUCE_VST3_CAN_REPLACE_VST2=0
+        JUCE_SILENCE_XCODE_15_LINKER_WARNING=1
+)
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME})
