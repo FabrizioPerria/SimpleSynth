@@ -33,5 +33,7 @@ class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
 	// access the processor object that created it.
 	AudioPluginAudioProcessor &processorRef;
 
+	void setupSlider(juce::Slider &slider);
+
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessorEditor)
 };
