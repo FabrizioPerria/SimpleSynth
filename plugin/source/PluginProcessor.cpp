@@ -95,12 +95,12 @@ void AudioPluginAudioProcessor::prepareToPlay(double sampleRate, int samplesPerB
 {
 	synth.setCurrentPlaybackSampleRate(sampleRate);
 	for (auto i = 0; i < synth.getNumVoices(); ++i)
+	{
+		if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
 		{
-			if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
-				{
-					voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
-				}
+			voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
 		}
+	}
 }
 
 void AudioPluginAudioProcessor::releaseResources()
@@ -133,6 +133,15 @@ bool AudioPluginAudioProcessor::isBusesLayoutSupported(const BusesLayout &layout
 #endif
 }
 
+void AudioPluginAudioProcessor::setupEnvelope(SynthVoice *voice)
+{
+	auto attack = apvts.getRawParameterValue("ATTACK")->load();
+	auto decay = apvts.getRawParameterValue("DECAY")->load();
+	auto sustain = apvts.getRawParameterValue("SUSTAIN")->load();
+	auto release = apvts.getRawParameterValue("RELEASE")->load();
+	voice->updateEnvelope(attack, decay, sustain, release);
+}
+
 void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
 {
 	juce::ScopedNoDenormals noDenormals;
@@ -140,16 +149,17 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
 	auto totalNumInputChannels = getTotalNumInputChannels();
 
 	for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-		{
-			buffer.clear(i, 0, buffer.getNumSamples());
-		}
+	{
+		buffer.clear(i, 0, buffer.getNumSamples());
+	}
 
 	for (auto i = 0; i < synth.getNumVoices(); ++i)
+	{
+		if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
 		{
-			if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
-				{
-				}
+			setupEnvelope(voice);
 		}
+	}
 
 	synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
@@ -198,16 +208,16 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 																 waveTypes, defaultIndexWaveType));
 
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"ATTACK", 1}, "Attack",
-																NormalisableRange<float>{0.1f, 1.0f}, 0.1f));
+																NormalisableRange<float>{0.1f, 1.0f}, 0.8f));
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"DECAY", 1}, "Decay",
-																NormalisableRange<float>{0.1f, 1.0f}, 0.1f));
+																NormalisableRange<float>{0.1f, 1.0f}, 0.8f));
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"SUSTAIN", 1}, "Sustain",
 																NormalisableRange<float>{0.1f, 1.0f}, 1.0f));
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"RELEASE", 1}, "Release",
-																NormalisableRange<float>{0.1f, 3.0f}, 0.4f));
+																NormalisableRange<float>{0.1f, 3.0f}, 1.5f));
 
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"GAIN", 1}, "Gain",
-																NormalisableRange<float>{0.1f, 1.0f}, 0.5f));
+																NormalisableRange<float>{0.1f, 1.0f}, 0.3f));
 
 	return paramLayout;
 }

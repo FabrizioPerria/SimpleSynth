@@ -47,17 +47,10 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numOu
 
 	osc.prepare(spec);
 
-	gain.setGainLinear(0.01f);
+	gain.setGainLinear(0.3f);
 	gain.prepare(spec);
 
 	envelope.setSampleRate(sampleRate);
-
-	envelopeParameters.attack = 0.8f;
-	envelopeParameters.decay = 0.8f;
-	envelopeParameters.sustain = 1.0f;
-	envelopeParameters.release = 1.5f;
-
-	envelope.setParameters(envelopeParameters);
 
 	isPrepared = true;
 }
@@ -86,4 +79,14 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
 			clearCurrentNote();
 		}
 	}
+}
+
+void SynthVoice::updateEnvelope(const float attack, const float decay, const float sustain, const float release)
+{
+	envelopeParameters.attack = attack;
+	envelopeParameters.decay = decay;
+	envelopeParameters.sustain = sustain;
+	envelopeParameters.release = release;
+
+	envelope.setParameters(envelopeParameters);
 }

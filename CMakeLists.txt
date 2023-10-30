@@ -30,6 +30,13 @@ CPMAddPackage(
 )
 
 CPMAddPackage(
+    NAME TRACER
+    GITHUB_REPOSITORY fabrizioperria/tracer
+    GIT_TAG main
+    SOURCE_DIR ${LIB_DIR}/tracer
+)
+
+CPMAddPackage(
     NAME GOOGLETEST
     GITHUB_REPOSITORY google/googletest
     VERSION 1.13.0
@@ -39,13 +46,14 @@ CPMAddPackage(
         "gtest_force_shared_crt ON"
 )
 
- enable_testing()
+enable_testing()
 
 if (MSVC)
     add_compile_options(/Wall /WX)
 else()
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
+
 
 add_subdirectory(plugin)
 add_subdirectory(test)

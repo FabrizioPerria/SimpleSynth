@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "SynthVoice.h"
 
 //==============================================================================
 class AudioPluginAudioProcessor : public juce::AudioProcessor
@@ -50,6 +51,7 @@ class AudioPluginAudioProcessor : public juce::AudioProcessor
 	juce::Synthesiser synth;
 	juce::AudioProcessorValueTreeState apvts;
 
+	void setupEnvelope(SynthVoice *voice);
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
 };
