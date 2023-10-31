@@ -1,50 +1,31 @@
 #include "envelopeComponent.h"
 
 EnvelopeComponent::EnvelopeComponent(juce::AudioProcessorValueTreeState &apvts)
+	: attackSlider(apvts, "ATTACK", "A"), decaySlider(apvts, "DECAY", "D"), sustainSlider(apvts, "SUSTAIN", "S"),
+	  releaseSlider(apvts, "RELEASE", "R")
 {
-	attackAttachment =
-		std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, "ATTACK", attackSlider);
-	decayAttachment =
-		std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, "DECAY", decaySlider);
-	sustainAttachment =
-		std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, "SUSTAIN", sustainSlider);
-	releaseAttachment =
-		std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, "RELEASE", releaseSlider);
+	addAndMakeVisible(attackSlider);
+	addAndMakeVisible(decaySlider);
+	addAndMakeVisible(sustainSlider);
+	addAndMakeVisible(releaseSlider);
 
-	setupSlider(attackSlider);
-	setupSlider(decaySlider);
-	setupSlider(sustainSlider);
-	setupSlider(releaseSlider);
+	setText("ADSR");
 }
 
 EnvelopeComponent::~EnvelopeComponent()
 {
 }
 
-void EnvelopeComponent::paint(juce::Graphics &g)
-{
-	g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
-}
-
 void EnvelopeComponent::resized()
 {
-	const auto bounds = getLocalBounds().reduced(10);
-	const auto padding = 10;
-	const auto sliderWidth = bounds.getWidth() / 4 - padding;
-	const auto sliderHeight = bounds.getHeight() / 4 - padding;
+	juce::FlexBox fb;
 
-	const auto sliderStartX = 0;
-	const auto sliderStartY = bounds.getHeight() / 2 - sliderHeight / 2;
+	fb.flexDirection = juce::FlexBox::Direction::row;
 
-	attackSlider.setBounds(sliderStartX, sliderStartY, sliderWidth, sliderHeight);
-	decaySlider.setBounds(attackSlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
-	sustainSlider.setBounds(decaySlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
-	releaseSlider.setBounds(sustainSlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
-}
+	fb.items.add(FlexItem(attackSlider).withFlex(1.0f).withMargin(10));
+	fb.items.add(FlexItem(decaySlider).withFlex(1.0f).withMargin(10));
+	fb.items.add(FlexItem(sustainSlider).withFlex(1.0f).withMargin(10));
+	fb.items.add(FlexItem(releaseSlider).withFlex(1.0f).withMargin(10));
 
-void EnvelopeComponent::setupSlider(juce::Slider &slider)
-{
-	slider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
-	slider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
-	addAndMakeVisible(slider);
+	fb.performLayout(getLocalBounds().reduced(10));
 }

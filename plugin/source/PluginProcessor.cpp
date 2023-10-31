@@ -139,7 +139,7 @@ void AudioPluginAudioProcessor::setupEnvelope(SynthVoice *voice)
 	auto decay = apvts.getRawParameterValue("DECAY")->load();
 	auto sustain = apvts.getRawParameterValue("SUSTAIN")->load();
 	auto release = apvts.getRawParameterValue("RELEASE")->load();
-	voice->updateEnvelope(attack, decay, sustain, release);
+	voice->update(attack, decay, sustain, release);
 }
 
 void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)

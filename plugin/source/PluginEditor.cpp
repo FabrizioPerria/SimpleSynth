@@ -31,4 +31,5 @@ void AudioPluginAudioProcessorEditor::paint(juce::Graphics &g)
 
 void AudioPluginAudioProcessorEditor::resized()
 {
+	envelopeComponent.setBounds(getLocalBounds().reduced(10));
 }

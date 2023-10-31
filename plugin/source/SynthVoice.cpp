@@ -81,12 +81,7 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
 	}
 }
 
-void SynthVoice::updateEnvelope(const float attack, const float decay, const float sustain, const float release)
+void SynthVoice::update(const float attack, const float decay, const float sustain, const float release)
 {
-	envelopeParameters.attack = attack;
-	envelopeParameters.decay = decay;
-	envelopeParameters.sustain = sustain;
-	envelopeParameters.release = release;
-
-	envelope.setParameters(envelopeParameters);
+	envelope.update(attack, decay, sustain, release);
 }

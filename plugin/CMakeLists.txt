@@ -27,6 +27,7 @@ target_sources(${PROJECT_NAME}
         source/SynthVoice.cpp
         source/data/envelopeData.cpp
         source/ui/envelopeComponent.cpp
+        source/ui/labeledSlider.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
