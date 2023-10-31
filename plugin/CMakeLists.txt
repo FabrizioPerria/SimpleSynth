@@ -15,10 +15,18 @@ juce_add_plugin(${PROJECT_NAME}
     COMPANY_NAME "fp"
 )
 
+juce_add_binary_data(BinaryData SOURCES
+    resources/sine.svg
+    resources/square.svg
+    resources/sawtooth.svg
+)
+
 get_target_property(juce_library_code ${PROJECT_NAME} JUCE_GENERATED_SOURCES_DIRECTORY)
 juce_generate_juce_header(${PROJECT_NAME})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES JUCE_LIBRARY_CODE ${juce_library_code})
+set(juce_binary_data_folder "${CMAKE_CURRENT_BINARY_DIR}/juce_binarydata_BinaryData/JuceLibraryCode")
+set_target_properties(${PROJECT_NAME} PROPERTIES JUCE_BINARY_DATA_FOLDER ${juce_binary_data_folder})
 
 target_sources(${PROJECT_NAME}
     PRIVATE
@@ -28,6 +36,7 @@ target_sources(${PROJECT_NAME}
         source/data/envelopeData.cpp
         source/ui/envelopeComponent.cpp
         source/ui/labeledSlider.cpp
+        source/ui/oscillatorPickerComponent.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
@@ -41,6 +50,7 @@ target_link_libraries(${PROJECT_NAME}
         juce::juce_dsp
         juce::juce_audio_utils
         juce::juce_gui_basics
+        BinaryData
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags

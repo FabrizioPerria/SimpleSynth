@@ -15,6 +15,7 @@ enable_testing()
 add_executable(${PROJECT_NAME})
 
 get_target_property(SIMPLE_SYNTH_JUCE_HEADER SimpleSynth JUCE_LIBRARY_CODE)
+get_target_property(SIMPLE_SYNTH_JUCE_BINARY_DATA_FOLDER SimpleSynth JUCE_BINARY_DATA_FOLDER)
 target_sources(${PROJECT_NAME}
     PRIVATE
     source/AudioProcessorTest.cpp
@@ -25,6 +26,7 @@ target_include_directories(${PROJECT_NAME}
         ${INCLUDE_LIB_DIRS}
         ${JUCE_SOURCE_DIR}/modules
         ${SIMPLE_SYNTH_JUCE_HEADER}
+        ${SIMPLE_SYNTH_JUCE_BINARY_DATA_FOLDER}
 )
 
 target_link_libraries(${PROJECT_NAME}
