@@ -3,6 +3,7 @@
 #include "PluginEditor.h"
 #include "SynthSound.h"
 #include "SynthVoice.h"
+#include "utils/OscillatorType.h"
 
 //==============================================================================
 AudioPluginAudioProcessor::AudioPluginAudioProcessor()
@@ -139,7 +140,13 @@ void AudioPluginAudioProcessor::setupEnvelope(SynthVoice *voice)
 	auto decay = apvts.getRawParameterValue("DECAY")->load();
 	auto sustain = apvts.getRawParameterValue("SUSTAIN")->load();
 	auto release = apvts.getRawParameterValue("RELEASE")->load();
-	voice->update(attack, decay, sustain, release);
+	voice->updateEnvelope(attack, decay, sustain, release);
+}
+
+void AudioPluginAudioProcessor::setupOscillator(SynthVoice *voice)
+{
+	auto type = OscillatorType::fromInt(static_cast<int>(apvts.getRawParameterValue("OSC_WAVETYPE")->load()));
+	voice->updateOscillator(type);
 }
 
 void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
@@ -158,6 +165,7 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
 		if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
 		{
 			setupEnvelope(voice);
+			setupOscillator(voice);
 		}
 	}
 
@@ -202,10 +210,9 @@ juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter()
 juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::createParams()
 {
 	juce::AudioProcessorValueTreeState::ParameterLayout paramLayout;
-	juce::StringArray waveTypes{"Sine", "Saw", "Square"};
-	int defaultIndexWaveType = 0;
+
 	paramLayout.add(std::make_unique<juce::AudioParameterChoice>(ParameterID{"OSC_WAVETYPE", 1}, "Oscillator",
-																 waveTypes, defaultIndexWaveType));
+																 OscillatorType::toStringArray(), 2));
 
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"ATTACK", 1}, "Attack",
 																NormalisableRange<float>{0.1f, 1.0f}, 0.8f));

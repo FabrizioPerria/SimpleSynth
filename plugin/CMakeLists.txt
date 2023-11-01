@@ -33,10 +33,12 @@ target_sources(${PROJECT_NAME}
         source/PluginEditor.cpp
         source/PluginProcessor.cpp
         source/SynthVoice.cpp
-        source/data/envelopeData.cpp
-        source/ui/envelopeComponent.cpp
-        source/ui/labeledSlider.cpp
-        source/ui/oscillatorPickerComponent.cpp
+        source/data/EnvelopeData.cpp
+        source/data/OscillatorData.cpp
+        source/ui/LabeledSlider.cpp
+        source/ui/EnvelopeComponent.cpp
+        source/ui/RadioButtonComponent.cpp
+        source/ui/OscillatorPickerComponent.cpp
 )
 
 target_include_directories(${PROJECT_NAME}

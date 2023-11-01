@@ -4,11 +4,12 @@
 
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor(AudioPluginAudioProcessor &p)
-	: AudioProcessorEditor(&p), processorRef(p), envelopeComponent(p.getApvts())
+	: AudioProcessorEditor(&p), processorRef(p), envelopeComponent(p.getApvts()),
+	  oscillatorPickerComponent(p.getApvts(), "OSC_WAVETYPE")
 {
 	/* juce::ComboBox waveType; */
-	waveTypeAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(
-		processorRef.getApvts(), "OSC_WAVETYPE", waveType);
+	/* waveTypeAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>( */
+	/* processorRef.getApvts(), "OSC_WAVETYPE", waveType); */
 
 	/* juce::Slider gainSlider; */
 	gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(processorRef.getApvts(),

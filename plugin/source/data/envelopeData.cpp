@@ -1,4 +1,4 @@
-#include "envelopeData.h"
+#include "data/EnvelopeData.h"
 
 void EnvelopeData::update(const float attack, const float decay, const float sustain, const float release)
 {

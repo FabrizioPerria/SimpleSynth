@@ -2,7 +2,9 @@
 
 #include <JuceHeader.h>
 #include <SynthSound.h>
-#include "data/envelopeData.h"
+#include "data/EnvelopeData.h"
+#include "data/OscillatorData.h"
+#include "utils/OscillatorType.h"
 
 class SynthVoice : public juce::SynthesiserVoice
 {
@@ -14,14 +16,13 @@ class SynthVoice : public juce::SynthesiserVoice
 	void controllerMoved(int controllerNumber, int newControllerValue) override;
 	void prepareToPlay(double sampleRate, int samplesPerBlock, int numOutputChannels);
 	void renderNextBlock(AudioBuffer<float> &outputBuffer, int startSample, int numSamples) override;
-	void update(const float attack, const float decay, const float sustain, const float release);
+	void updateEnvelope(const float attack, const float decay, const float sustain, const float release);
+	void updateOscillator(const OscillatorType type);
 
   private:
-	/* juce::dsp::Oscillator<float> osc{[](float x) { return std::sin(x); }}; */
-	/* juce::dsp::Oscillator<float> osc{[](float x) { return x < 0.0f ? -1.0f : 1.0f; }}; */
-	juce::dsp::Oscillator<float> osc{[](float x) { return x / juce::MathConstants<float>::pi; }};
-	juce::dsp::Gain<float> gain;
 	EnvelopeData envelope;
+	OscillatorData oscillator;
+	juce::dsp::Gain<float> gain;
 
 	juce::AudioBuffer<float> voiceBuffer;
 

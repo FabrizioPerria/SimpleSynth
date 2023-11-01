@@ -1,7 +1,7 @@
 #pragma once
 
 #include "JuceHeader.h"
-#include "labeledSlider.h"
+#include "ui/LabeledSlider.h"
 
 class EnvelopeComponent : public juce::GroupComponent
 {

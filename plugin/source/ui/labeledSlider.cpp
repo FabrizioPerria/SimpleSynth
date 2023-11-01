@@ -1,4 +1,4 @@
-#include "labeledSlider.h"
+#include "ui/LabeledSlider.h"
 
 LabeledSlider::LabeledSlider(juce::AudioProcessorValueTreeState &apvts, const juce::String &parameterID,
 							 const juce::String &name)

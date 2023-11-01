@@ -1,8 +1,8 @@
 #pragma once
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "ui/envelopeComponent.h"
-#include "ui/oscillatorPickerComponent.h"
+#include "ui/EnvelopeComponent.h"
+#include "ui/OscillatorPickerComponent.h"
 
 //==============================================================================
 class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
@@ -16,9 +16,6 @@ class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
 	void resized() override;
 
   private:
-	juce::ComboBox waveType;
-	std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> waveTypeAttachment;
-
 	juce::Slider gainSlider;
 	std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
 

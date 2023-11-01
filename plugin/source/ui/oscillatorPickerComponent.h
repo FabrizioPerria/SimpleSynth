@@ -1,23 +1,20 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "ui/RadioButtonComponent.h"
+#include "attachments/RadioButtonAttachment.h"
 
-class OscillatorPickerComponent : public juce::Component, public juce::Button::Listener
+class OscillatorPickerComponent : public juce::Component
 {
   public:
-	OscillatorPickerComponent();
+	OscillatorPickerComponent(juce::AudioProcessorValueTreeState &apvts, const juce::String &parameterID);
 	~OscillatorPickerComponent() override;
 
 	void resized() override;
 
-	void buttonClicked(juce::Button *button) override;
-
   private:
-	juce::DrawableButton sineButton;
-	juce::DrawableButton squareButton;
-	juce::DrawableButton sawButton;
-
-	void setupButton(juce::DrawableButton &button, const char *svg, size_t size);
+	RadioButtonComponent radioButton;
+	std::unique_ptr<RadioButtonAttachment> attachment;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscillatorPickerComponent)
 };

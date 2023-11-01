@@ -1,4 +1,4 @@
-#include "envelopeComponent.h"
+#include "ui/EnvelopeComponent.h"
 
 EnvelopeComponent::EnvelopeComponent(juce::AudioProcessorValueTreeState &apvts)
 	: attackSlider(apvts, "ATTACK", "A"), decaySlider(apvts, "DECAY", "D"), sustainSlider(apvts, "SUSTAIN", "S"),
