@@ -7,13 +7,11 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor(AudioPluginAudi
 	: AudioProcessorEditor(&p), processorRef(p), envelopeComponent(p.getApvts()),
 	  oscillatorPickerComponent(p.getApvts(), "OSC_WAVETYPE")
 {
-	/* juce::ComboBox waveType; */
-	/* waveTypeAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>( */
-	/* processorRef.getApvts(), "OSC_WAVETYPE", waveType); */
 
 	/* juce::Slider gainSlider; */
-	gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(processorRef.getApvts(),
-																							"GAIN", gainSlider);
+	/* gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(processorRef.getApvts(),
+	 */
+	/* "GAIN", gainSlider); */
 
 	setSize(800, 600);
 
@@ -35,15 +33,9 @@ void AudioPluginAudioProcessorEditor::resized()
 {
 	FlexBox fb;
 	fb.flexDirection = FlexBox::Direction::row;
-	/* fb.flexWrap = FlexBox::Wrap::wrap; */
-	/* fb.alignContent = FlexBox::AlignContent::center; */
-	/* fb.alignItems = FlexBox::AlignItems::center; */
-	/* fb.justifyContent = FlexBox::JustifyContent::center; */
 
-	fb.items.add(FlexItem(envelopeComponent).withFlex(1.0f).withMargin(10));
 	fb.items.add(FlexItem(oscillatorPickerComponent).withFlex(1.0f).withMargin(10));
+	fb.items.add(FlexItem(envelopeComponent).withFlex(1.0f).withMargin(10));
 
 	fb.performLayout(getLocalBounds());
-	/* envelopeComponent.setBounds(getLocalBounds().reduced(10)); */
-	/* oscillatorPickerComponent.setBounds(getLocalBounds().reduced(10)); */
 }

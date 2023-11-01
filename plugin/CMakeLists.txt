@@ -39,6 +39,7 @@ target_sources(${PROJECT_NAME}
         source/ui/EnvelopeComponent.cpp
         source/ui/RadioButtonComponent.cpp
         source/ui/OscillatorPickerComponent.cpp
+        source/attachments/RadioButtonAttachment.cpp
 )
 
 target_include_directories(${PROJECT_NAME}

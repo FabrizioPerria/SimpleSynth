@@ -14,6 +14,12 @@ class OscillatorType
 		lastValue = SAW
 	};
 
+	typedef struct SVGData
+	{
+		const char *svg;
+		const size_t size;
+	} SVGData;
+
 	static juce::String toString(OscillatorType::Value oscillatorType)
 	{
 		switch (oscillatorType)
@@ -30,14 +36,42 @@ class OscillatorType
 		}
 	}
 
-	static juce::StringArray toStringArray()
+	static SVGData getSVG(OscillatorType::Value oscillatorType)
 	{
-		juce::StringArray oscillatorTypeStringArray;
+		switch (oscillatorType)
+		{
+		case OscillatorType::SINE:
+			return SVGData{BinaryData::sine_svg, BinaryData::sine_svgSize};
+		case OscillatorType::SQUARE:
+			return SVGData{BinaryData::square_svg, BinaryData::square_svgSize};
+		case OscillatorType::SAW:
+			return SVGData{BinaryData::sawtooth_svg, BinaryData::sawtooth_svgSize};
+		default:
+			jassertfalse;
+			/* return "Should not happen"; */
+		}
+	}
+
+	static juce::Array<OscillatorType::Value> toArray()
+	{
+		juce::Array<OscillatorType::Value> oscillatorTypeArray;
 		for (int i = ( int ) OscillatorType::firstValue; i <= ( int ) OscillatorType::lastValue; i++)
 		{
 			auto tmp = OscillatorType::fromInt(i);
-			oscillatorTypeStringArray.add(toString(tmp));
+			oscillatorTypeArray.add(tmp);
 		}
+		return oscillatorTypeArray;
+	}
+
+	static juce::StringArray toStringArray()
+	{
+		juce::StringArray oscillatorTypeStringArray;
+
+		std::for_each(OscillatorType::toArray().begin(), OscillatorType::toArray().end(),
+					  [&oscillatorTypeStringArray](OscillatorType::Value oscillatorType) {
+						  oscillatorTypeStringArray.add(toString(oscillatorType));
+					  });
+
 		return oscillatorTypeStringArray;
 	}
 

@@ -1,12 +1,16 @@
 #include "ui/OscillatorPickerComponent.h"
-#include "BinaryData.h"
+/* #include "BinaryData.h" */
+#include "utils/OscillatorType.h"
 
 OscillatorPickerComponent::OscillatorPickerComponent(juce::AudioProcessorValueTreeState &apvts,
 													 const juce::String &parameterID)
 {
-	radioButton.addButton(BinaryData::sine_svg, BinaryData::sine_svgSize, "SINE");
-	radioButton.addButton(BinaryData::square_svg, BinaryData::square_svgSize, "SQUARE");
-	radioButton.addButton(BinaryData::sawtooth_svg, BinaryData::sawtooth_svgSize, "SAW");
+	for (auto waveType : OscillatorType::toArray())
+	{
+		auto svgData = OscillatorType::getSVG(waveType);
+		radioButton.addButton(svgData.svg, svgData.size, OscillatorType::toString(waveType));
+	}
+
 	addAndMakeVisible(radioButton);
 	attachment = std::make_unique<RadioButtonAttachment>(apvts, parameterID, radioButton);
 }
