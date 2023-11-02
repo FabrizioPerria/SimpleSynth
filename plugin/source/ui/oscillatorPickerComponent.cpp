@@ -1,5 +1,4 @@
 #include "ui/OscillatorPickerComponent.h"
-/* #include "BinaryData.h" */
 #include "utils/OscillatorType.h"
 
 OscillatorPickerComponent::OscillatorPickerComponent(juce::AudioProcessorValueTreeState &apvts,
@@ -13,6 +12,8 @@ OscillatorPickerComponent::OscillatorPickerComponent(juce::AudioProcessorValueTr
 
 	addAndMakeVisible(radioButton);
 	attachment = std::make_unique<RadioButtonAttachment>(apvts, parameterID, radioButton);
+
+	setText("Oscillator");
 }
 
 OscillatorPickerComponent::~OscillatorPickerComponent()

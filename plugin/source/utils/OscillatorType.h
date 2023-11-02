@@ -1,6 +1,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include <functional>
 
 class OscillatorType
 {
@@ -19,6 +20,22 @@ class OscillatorType
 		const char *svg;
 		const size_t size;
 	} SVGData;
+
+	static std::function<float(float)> getFunction(OscillatorType::Value oscillatorType)
+	{
+		switch (oscillatorType)
+		{
+		case OscillatorType::SINE:
+			return [](float x) { return std::sin(x); };
+		case OscillatorType::SQUARE:
+			return [](float x) { return x < 0.0f ? -1.0f : 1.0f; };
+		case OscillatorType::SAW:
+			return [](float x) { return x / juce::MathConstants<float>::pi; };
+		default:
+			jassertfalse;
+			return [](float x) { return x; };
+		}
+	}
 
 	static juce::String toString(OscillatorType::Value oscillatorType)
 	{
@@ -67,10 +84,10 @@ class OscillatorType
 	{
 		juce::StringArray oscillatorTypeStringArray;
 
-		std::for_each(OscillatorType::toArray().begin(), OscillatorType::toArray().end(),
-					  [&oscillatorTypeStringArray](OscillatorType::Value oscillatorType) {
-						  oscillatorTypeStringArray.add(toString(oscillatorType));
-					  });
+		for (auto type : OscillatorType::toArray())
+		{
+			oscillatorTypeStringArray.add(toString(type));
+		}
 
 		return oscillatorTypeStringArray;
 	}

@@ -4,7 +4,7 @@
 #include "ui/RadioButtonComponent.h"
 #include "attachments/RadioButtonAttachment.h"
 
-class OscillatorPickerComponent : public juce::Component
+class OscillatorPickerComponent : public juce::GroupComponent
 {
   public:
 	OscillatorPickerComponent(juce::AudioProcessorValueTreeState &apvts, const juce::String &parameterID);
