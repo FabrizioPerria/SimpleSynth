@@ -49,10 +49,12 @@ class AudioPluginAudioProcessor : public juce::AudioProcessor
 
   private:
 	juce::Synthesiser synth;
+	juce::dsp::Gain<float> outputGain;
 	juce::AudioProcessorValueTreeState apvts;
 
 	void setupEnvelope(SynthVoice *voice);
 	void setupOscillator(SynthVoice *voice);
+	void setupOutputGain();
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
 };

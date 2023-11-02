@@ -149,6 +149,12 @@ void AudioPluginAudioProcessor::setupOscillator(SynthVoice *voice)
 	voice->updateOscillator(type);
 }
 
+void AudioPluginAudioProcessor::setupOutputGain()
+{
+	auto gainValue = apvts.getRawParameterValue("GAIN")->load();
+	outputGain.setGainDecibels(gainValue);
+}
+
 void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
 {
 	juce::ScopedNoDenormals noDenormals;
@@ -166,10 +172,13 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
 		{
 			setupEnvelope(voice);
 			setupOscillator(voice);
+			setupOutputGain();
 		}
 	}
 
 	synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+	juce::dsp::AudioBlock<float> audioBlock{buffer};
+	outputGain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
 }
 
 //==============================================================================
@@ -224,7 +233,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 																NormalisableRange<float>{0.1f, 3.0f}, 1.5f));
 
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"GAIN", 1}, "Gain",
-																NormalisableRange<float>{0.1f, 1.0f}, 0.3f));
+																NormalisableRange<float>{-40.0f, 0.2f, 0.1f}, 0.1f));
 
 	return paramLayout;
 }

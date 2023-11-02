@@ -5,18 +5,14 @@
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor(AudioPluginAudioProcessor &p)
 	: AudioProcessorEditor(&p), processorRef(p), envelopeComponent(p.getApvts()),
-	  oscillatorPickerComponent(p.getApvts(), "OSC_WAVETYPE")
+	  oscillatorPickerComponent(p.getApvts(), "OSC_WAVETYPE"), gainComponent(p.getApvts(), "GAIN")
 {
-
-	/* juce::Slider gainSlider; */
-	/* gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(processorRef.getApvts(),
-	 */
-	/* "GAIN", gainSlider); */
 
 	setSize(800, 600);
 
 	addAndMakeVisible(envelopeComponent);
 	addAndMakeVisible(oscillatorPickerComponent);
+	addAndMakeVisible(gainComponent);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -36,6 +32,7 @@ void AudioPluginAudioProcessorEditor::resized()
 
 	fb.items.add(FlexItem(oscillatorPickerComponent).withFlex(1.0f).withMargin(10));
 	fb.items.add(FlexItem(envelopeComponent).withFlex(1.0f).withMargin(10));
+	fb.items.add(FlexItem(gainComponent).withFlex(0.2f).withMargin(10));
 
 	fb.performLayout(getLocalBounds());
 }

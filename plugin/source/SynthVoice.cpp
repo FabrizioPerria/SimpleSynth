@@ -12,7 +12,7 @@ void SynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSound 
 	juce::ignoreUnused(sound);
 	juce::ignoreUnused(currentPitchWheelPosition);
 	envelope.noteOn();
-	oscillator.setFrequency(static_cast<float>(juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber)));
+	oscillator.setOscillatorFrequency(midiNoteNumber);
 }
 
 void SynthVoice::stopNote(float velocity, bool allowTailOff)
@@ -45,12 +45,11 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numOu
 	spec.maximumBlockSize = ( uint32_t ) samplesPerBlock;
 	spec.numChannels = ( uint32_t ) numOutputChannels;
 
-	oscillator.prepare(spec);
+	oscillator.prepareToPlay(spec);
+	envelope.preparetoPlay(spec);
 
 	gain.setGainLinear(0.3f);
 	gain.prepare(spec);
-
-	envelope.setSampleRate(sampleRate);
 
 	isPrepared = true;
 }
@@ -67,7 +66,7 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
 	voiceBuffer.clear();
 
 	juce::dsp::AudioBlock<float> audioBlock{voiceBuffer};
-	oscillator.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
+	oscillator.getNextAudioBlock(audioBlock);
 	gain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
 	envelope.applyEnvelopeToBuffer(voiceBuffer, 0, voiceBuffer.getNumSamples());
 

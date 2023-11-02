@@ -9,3 +9,9 @@ void EnvelopeData::update(const float attack, const float decay, const float sus
 
 	setParameters(envelopeParameters);
 }
+
+void EnvelopeData::preparetoPlay(const juce::dsp::ProcessSpec &spec)
+{
+	setSampleRate(spec.sampleRate);
+	reset();
+}
