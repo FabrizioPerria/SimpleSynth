@@ -8,6 +8,7 @@ void OscillatorData::setOscillatorType(OscillatorType waveType)
 void OscillatorData::prepareToPlay(juce::dsp::ProcessSpec &spec)
 {
 	prepare(spec);
+	gain.prepare(spec);
 }
 
 void OscillatorData::setOscillatorFrequency(int midiNoteNumber)
@@ -18,4 +19,10 @@ void OscillatorData::setOscillatorFrequency(int midiNoteNumber)
 void OscillatorData::getNextAudioBlock(juce::dsp::AudioBlock<float> &audioBlock)
 {
 	process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
+	gain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
+}
+
+void OscillatorData::setOscillatorLevel(const float level)
+{
+	gain.setGainDecibels(level);
 }

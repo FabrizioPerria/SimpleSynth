@@ -39,6 +39,7 @@ target_sources(${PROJECT_NAME}
         source/ui/EnvelopeComponent.cpp
         source/ui/RadioButtonComponent.cpp
         source/ui/OscillatorPickerComponent.cpp
+        source/ui/OscillatorComponent.cpp
         source/ui/GainComponent.cpp
         source/attachments/RadioButtonAttachment.cpp
 )

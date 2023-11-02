@@ -12,8 +12,6 @@ OscillatorPickerComponent::OscillatorPickerComponent(juce::AudioProcessorValueTr
 
 	addAndMakeVisible(radioButton);
 	attachment = std::make_unique<RadioButtonAttachment>(apvts, parameterID, radioButton);
-
-	setText("Oscillator");
 }
 
 OscillatorPickerComponent::~OscillatorPickerComponent()

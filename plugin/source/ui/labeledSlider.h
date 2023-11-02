@@ -8,6 +8,7 @@ class LabeledSlider : public juce::Component
 	LabeledSlider(juce::AudioProcessorValueTreeState &apvts, const juce::String &parameterID, const juce::String &name);
 
 	void resized() override;
+	void setSliderOrientation(juce::Slider::SliderStyle style);
 
   private:
 	juce::Slider slider;

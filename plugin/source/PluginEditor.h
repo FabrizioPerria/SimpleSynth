@@ -2,7 +2,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "ui/EnvelopeComponent.h"
-#include "ui/OscillatorPickerComponent.h"
+#include "ui/OscillatorComponent.h"
 #include "ui/GainComponent.h"
 
 //==============================================================================
@@ -22,7 +22,7 @@ class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
 	AudioPluginAudioProcessor &processorRef;
 
 	EnvelopeComponent envelopeComponent;
-	OscillatorPickerComponent oscillatorPickerComponent;
+	OscillatorComponent oscillatorComponent;
 	GainComponent gainComponent;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessorEditor)

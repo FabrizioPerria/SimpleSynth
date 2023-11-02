@@ -17,12 +17,11 @@ class SynthVoice : public juce::SynthesiserVoice
 	void prepareToPlay(double sampleRate, int samplesPerBlock, int numOutputChannels);
 	void renderNextBlock(AudioBuffer<float> &outputBuffer, int startSample, int numSamples) override;
 	void updateEnvelope(const float attack, const float decay, const float sustain, const float release);
-	void updateOscillator(const OscillatorType type);
+	void updateOscillator(const OscillatorType type, const float level);
 
   private:
 	EnvelopeData envelope;
 	OscillatorData oscillator;
-	juce::dsp::Gain<float> gain;
 
 	juce::AudioBuffer<float> voiceBuffer;
 

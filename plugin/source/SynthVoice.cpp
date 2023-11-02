@@ -48,9 +48,6 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numOu
 	oscillator.prepareToPlay(spec);
 	envelope.preparetoPlay(spec);
 
-	gain.setGainLinear(0.3f);
-	gain.prepare(spec);
-
 	isPrepared = true;
 }
 
@@ -67,7 +64,6 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
 
 	juce::dsp::AudioBlock<float> audioBlock{voiceBuffer};
 	oscillator.getNextAudioBlock(audioBlock);
-	gain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
 	envelope.applyEnvelopeToBuffer(voiceBuffer, 0, voiceBuffer.getNumSamples());
 
 	for (auto channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
@@ -85,7 +81,8 @@ void SynthVoice::updateEnvelope(const float attack, const float decay, const flo
 	envelope.update(attack, decay, sustain, release);
 }
 
-void SynthVoice::updateOscillator(const OscillatorType type)
+void SynthVoice::updateOscillator(const OscillatorType type, const float level)
 {
 	oscillator.setOscillatorType(type);
+	oscillator.setOscillatorLevel(level);
 }

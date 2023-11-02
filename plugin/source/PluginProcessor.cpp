@@ -146,12 +146,13 @@ void AudioPluginAudioProcessor::setupEnvelope(SynthVoice *voice)
 void AudioPluginAudioProcessor::setupOscillator(SynthVoice *voice)
 {
 	auto type = OscillatorType::fromInt(static_cast<int>(apvts.getRawParameterValue("OSC_WAVETYPE")->load()));
-	voice->updateOscillator(type);
+	auto level = apvts.getRawParameterValue("OSC_GAIN")->load();
+	voice->updateOscillator(type, level);
 }
 
 void AudioPluginAudioProcessor::setupOutputGain()
 {
-	auto gainValue = apvts.getRawParameterValue("GAIN")->load();
+	auto gainValue = apvts.getRawParameterValue("OUTPUT_GAIN")->load();
 	outputGain.setGainDecibels(gainValue);
 }
 
@@ -222,6 +223,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 
 	paramLayout.add(std::make_unique<juce::AudioParameterChoice>(ParameterID{"OSC_WAVETYPE", 1}, "Oscillator",
 																 OscillatorType::toStringArray(), 2));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"OSC_GAIN", 1}, "Gain",
+																NormalisableRange<float>{-40.0f, 0.2f, 0.1f}, -10.0f));
 
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"ATTACK", 1}, "Attack",
 																NormalisableRange<float>{0.1f, 1.0f}, 0.8f));
@@ -232,8 +235,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"RELEASE", 1}, "Release",
 																NormalisableRange<float>{0.1f, 3.0f}, 1.5f));
 
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"GAIN", 1}, "Gain",
-																NormalisableRange<float>{-40.0f, 0.2f, 0.1f}, 0.1f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"OUTPUT_GAIN", 1}, "Gain",
+																NormalisableRange<float>{-40.0f, 0.2f, 0.1f}, -10.0f));
 
 	return paramLayout;
 }

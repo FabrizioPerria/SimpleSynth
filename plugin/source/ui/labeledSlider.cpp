@@ -7,7 +7,7 @@ LabeledSlider::LabeledSlider(juce::AudioProcessorValueTreeState &apvts, const ju
 	label.setText(name, juce::dontSendNotification);
 	label.setJustificationType(juce::Justification::centred);
 	slider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
-	slider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
+	slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 50, 20);
 	addAndMakeVisible(label);
 	addAndMakeVisible(slider);
 }
@@ -22,4 +22,9 @@ void LabeledSlider::resized()
 	fb.items.add(juce::FlexItem(slider).withFlex(1.0f));
 
 	fb.performLayout(getLocalBounds());
+}
+
+void LabeledSlider::setSliderOrientation(juce::Slider::SliderStyle style)
+{
+	slider.setSliderStyle(style);
 }
