@@ -234,12 +234,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 		paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
 			ParameterID{"OSC_GAIN" + std::to_string(voicesIndex), 1}, "Gain " + std::to_string(voicesIndex),
 			NormalisableRange<float>{-40.0f, 0.2f, 0.1f}, -10.0f));
-		paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
-			ParameterID{"OSC_LFO_FREQ" + std::to_string(voicesIndex), 1},
-			"LFO Frequency " + std::to_string(voicesIndex), NormalisableRange<float>{0.0f, 1000.0f, 1.0f}, 5.0f));
+		paramLayout.add(
+			std::make_unique<juce::AudioParameterFloat>(ParameterID{"OSC_LFO_FREQ" + std::to_string(voicesIndex), 1},
+														"LFO Frequency " + std::to_string(voicesIndex),
+														NormalisableRange<float>{0.0f, 1000.0f, 0.01f, 0.3f}, 5.0f));
 		paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
 			ParameterID{"OSC_LFO_DEPTH" + std::to_string(voicesIndex), 1}, "LFO Depth " + std::to_string(voicesIndex),
-			NormalisableRange<float>{0.0f, 1000.0f, 1.0f}, 500.0f));
+			NormalisableRange<float>{0.0f, 1000.0f, 0.01f, 0.3f}, 500.0f));
 	}
 
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"ATTACK", 1}, "Attack",

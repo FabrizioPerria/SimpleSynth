@@ -12,6 +12,7 @@ class OscillatorType
 		firstValue,
 		SINE = firstValue,
 		SQUARE,
+		TRIANGLE,
 		SAW,
 		lastValue = SAW
 	};
@@ -24,6 +25,8 @@ class OscillatorType
 			return [](float x) { return std::sin(x); };
 		case OscillatorType::SQUARE:
 			return [](float x) { return x < 0.0f ? -1.0f : 1.0f; };
+		case OscillatorType::TRIANGLE:
+			return [](float x) { return std::acos(std::sin(x)) / juce::MathConstants<float>::halfPi; };
 		case OscillatorType::SAW:
 			return [](float x) { return x / juce::MathConstants<float>::pi; };
 		default:
@@ -40,6 +43,8 @@ class OscillatorType
 			return "Sine";
 		case OscillatorType::SQUARE:
 			return "Square";
+		case OscillatorType::TRIANGLE:
+			return "Triangle";
 		case OscillatorType::SAW:
 			return "Saw";
 		default:
@@ -56,6 +61,8 @@ class OscillatorType
 			return SVGData{BinaryData::sine_svg, BinaryData::sine_svgSize};
 		case OscillatorType::SQUARE:
 			return SVGData{BinaryData::square_svg, BinaryData::square_svgSize};
+		case OscillatorType::TRIANGLE:
+			return SVGData{BinaryData::triangle_svg, BinaryData::triangle_svgSize};
 		case OscillatorType::SAW:
 			return SVGData{BinaryData::sawtooth_svg, BinaryData::sawtooth_svgSize};
 		default:

@@ -19,7 +19,14 @@ juce_add_binary_data(BinaryData SOURCES
     resources/sine.svg
     resources/square.svg
     resources/sawtooth.svg
+    resources/triangle.svg
     resources/volume.svg
+    resources/a.svg
+    resources/d.svg
+    resources/s.svg
+    resources/r.svg
+    resources/LFOFreq.svg
+    resources/LFODepth.svg
 )
 
 get_target_property(juce_library_code ${PROJECT_NAME} JUCE_GENERATED_SOURCES_DIRECTORY)

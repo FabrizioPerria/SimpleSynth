@@ -5,7 +5,7 @@ LabeledSlider::LabeledSlider(juce::AudioProcessorValueTreeState &apvts, const ju
 {
 	attachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, parameterID, slider);
 	label.setText(name, juce::dontSendNotification);
-	label.setFont(10.0f);
+	/* label.setFont(10.0f); */
 	label.setJustificationType(juce::Justification::centred);
 	addAndMakeVisible(label);
 	setSliderStyle(juce::Slider::SliderStyle::LinearVertical);

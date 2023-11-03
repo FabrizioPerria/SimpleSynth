@@ -20,7 +20,7 @@ void OscillatorData::prepareToPlay(juce::dsp::ProcessSpec &spec)
 
 void OscillatorData::setOscillatorFrequency(int midiNoteNumber)
 {
-	setFrequency(static_cast<float>(juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber)) + fmMod);
+	setFrequency(std::abs(static_cast<float>(juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber)) + fmMod));
 	currentNote = midiNoteNumber;
 }
 
