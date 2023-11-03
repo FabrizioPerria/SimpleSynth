@@ -16,17 +16,22 @@ juce_add_plugin(${PROJECT_NAME}
 )
 
 juce_add_binary_data(BinaryData SOURCES
+    resources/a.svg
+    resources/bandpass.svg
+    resources/d.svg
+    resources/filterCutoff.svg
+    resources/filterResonance.svg
+    resources/highpass.svg
+    resources/lfoDepth.svg
+    resources/lfoFreq.svg
+    resources/lowpass.svg
+    resources/r.svg
+    resources/s.svg
+    resources/sawtooth.svg
     resources/sine.svg
     resources/square.svg
-    resources/sawtooth.svg
     resources/triangle.svg
     resources/volume.svg
-    resources/a.svg
-    resources/d.svg
-    resources/s.svg
-    resources/r.svg
-    resources/LFOFreq.svg
-    resources/LFODepth.svg
 )
 
 get_target_property(juce_library_code ${PROJECT_NAME} JUCE_GENERATED_SOURCES_DIRECTORY)
@@ -41,16 +46,19 @@ target_sources(${PROJECT_NAME}
         source/PluginEditor.cpp
         source/PluginProcessor.cpp
         source/SynthVoice.cpp
+        source/attachments/RadioButtonAttachment.cpp
         source/data/EnvelopeData.cpp
         source/data/OscillatorData.cpp
-        source/ui/LabeledSlider.cpp
-        source/ui/IconSlider.cpp
         source/ui/EnvelopeComponent.cpp
-        source/ui/RadioButtonComponent.cpp
-        source/ui/OscillatorPickerComponent.cpp
-        source/ui/OscillatorComponent.cpp
+        source/ui/FilterComponent.cpp
+        source/ui/FilterPickerComponent.cpp
         source/ui/GainComponent.cpp
-        source/attachments/RadioButtonAttachment.cpp
+        source/ui/IconSliderComponent.cpp
+        source/ui/LFOComponent.cpp
+        source/ui/LabeledSliderComponent.cpp
+        source/ui/OscillatorComponent.cpp
+        source/ui/OscillatorPickerComponent.cpp
+        source/ui/RadioButtonComponent.cpp
 )
 
 target_include_directories(${PROJECT_NAME}

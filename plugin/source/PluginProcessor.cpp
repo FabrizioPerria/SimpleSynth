@@ -4,6 +4,7 @@
 #include "SynthSound.h"
 #include "SynthVoice.h"
 #include "utils/OscillatorType.h"
+#include "utils/FilterType.h"
 
 #define NUM_VOICES 3
 //==============================================================================
@@ -21,6 +22,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
 	synth.addSound(new SynthSound());
 	for (auto voices = 0; voices < NUM_VOICES; voices++)
 		synth.addVoice(new SynthVoice());
+
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -241,6 +243,17 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 		paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
 			ParameterID{"OSC_LFO_DEPTH" + std::to_string(voicesIndex), 1}, "LFO Depth " + std::to_string(voicesIndex),
 			NormalisableRange<float>{0.0f, 1000.0f, 0.01f, 0.3f}, 500.0f));
+		paramLayout.add(std::make_unique<juce::AudioParameterChoice>(
+			ParameterID{"OSC_FILTERTYPE" + std::to_string(voicesIndex), 1}, "Filter " + std::to_string(voicesIndex),
+			FilterType::toStringArray(), 2));
+		paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
+			ParameterID{"OSC_FILTER_CUTOFF" + std::to_string(voicesIndex), 1},
+			"Filter Cutoff " + std::to_string(voicesIndex), NormalisableRange<float>{0.0f, 1000.0f, 0.01f, 0.3f},
+			5.0f));
+		paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
+			ParameterID{"OSC_FILTER_RESONANCE" + std::to_string(voicesIndex), 1},
+			"Filter Resonance " + std::to_string(voicesIndex), NormalisableRange<float>{0.0f, 1000.0f, 0.01f, 0.3f},
+			500.0f));
 	}
 
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"ATTACK", 1}, "Attack",

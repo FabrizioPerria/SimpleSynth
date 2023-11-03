@@ -1,7 +1,7 @@
-#include "ui/LabeledSlider.h"
+#include "ui/LabeledSliderComponent.h"
 
-LabeledSlider::LabeledSlider(juce::AudioProcessorValueTreeState &apvts, const juce::String &parameterID,
-							 const juce::String &name)
+LabeledSliderComponent::LabeledSliderComponent(juce::AudioProcessorValueTreeState &apvts,
+											   const juce::String &parameterID, const juce::String &name)
 {
 	attachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, parameterID, slider);
 	label.setText(name, juce::dontSendNotification);
@@ -10,10 +10,12 @@ LabeledSlider::LabeledSlider(juce::AudioProcessorValueTreeState &apvts, const ju
 	addAndMakeVisible(label);
 	setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
 	slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 50, 20);
+	slider.onValueChange = [this]{ updateTooltip(); };
 	addAndMakeVisible(slider);
+	updateTooltip();
 }
 
-void LabeledSlider::resized()
+void LabeledSliderComponent::resized()
 {
 	juce::FlexBox fb;
 
@@ -27,7 +29,12 @@ void LabeledSlider::resized()
 	fb.performLayout(getLocalBounds());
 }
 
-void LabeledSlider::setSliderStyle(juce::Slider::SliderStyle style)
+void LabeledSliderComponent::setSliderStyle(juce::Slider::SliderStyle style)
 {
 	slider.setSliderStyle(style);
+}
+
+void LabeledSliderComponent::updateTooltip()
+{
+	slider.setTooltip(std::to_string(( int ) slider.getValue()));
 }

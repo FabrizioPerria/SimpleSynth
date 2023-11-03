@@ -27,5 +27,7 @@ class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
 	OscillatorComponent oscillator2;
 	GainComponent gainComponent;
 
+	std::unique_ptr<juce::TooltipWindow> tooltipWindow;
+
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessorEditor)
 };

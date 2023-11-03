@@ -1,15 +1,17 @@
 #include "ui/EnvelopeComponent.h"
 
-EnvelopeComponent::EnvelopeComponent(juce::AudioProcessorValueTreeState &apvts)
-	: attackSlider(apvts, "ATTACK", "A"), decaySlider(apvts, "DECAY", "D"), sustainSlider(apvts, "SUSTAIN", "S"),
-	  releaseSlider(apvts, "RELEASE", "R")
+EnvelopeComponent::EnvelopeComponent(juce::AudioProcessorValueTreeState &apvts, juce::String attackId,
+									 juce::String decayId, juce::String sustainId, juce::String releaseId,
+									 juce::String name)
+	: attackSlider(apvts, attackId, "A"), decaySlider(apvts, decayId, "D"), sustainSlider(apvts, sustainId, "S"),
+	  releaseSlider(apvts, releaseId, "R")
 {
 	addAndMakeVisible(attackSlider);
 	addAndMakeVisible(decaySlider);
 	addAndMakeVisible(sustainSlider);
 	addAndMakeVisible(releaseSlider);
 
-	setText("ADSR");
+	setText(name);
 }
 
 EnvelopeComponent::~EnvelopeComponent()

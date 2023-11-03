@@ -14,5 +14,7 @@ class GainComponent : public juce::GroupComponent
 	juce::Slider gainSlider;
 	std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainSliderAttachment;
 
+	void updateTooltip();
+
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GainComponent)
 };
