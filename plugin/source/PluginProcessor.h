@@ -53,7 +53,7 @@ class AudioPluginAudioProcessor : public juce::AudioProcessor
 	juce::AudioProcessorValueTreeState apvts;
 
 	void setupEnvelope(SynthVoice *voice);
-	void setupOscillator(SynthVoice *voice);
+	void setupOscillator(SynthVoice *voice, const int voiceIndex);
 	void setupOutputGain();
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)

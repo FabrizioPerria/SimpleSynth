@@ -22,7 +22,9 @@ class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
 	AudioPluginAudioProcessor &processorRef;
 
 	EnvelopeComponent envelopeComponent;
-	OscillatorComponent oscillatorComponent;
+	OscillatorComponent oscillator0;
+	OscillatorComponent oscillator1;
+	OscillatorComponent oscillator2;
 	GainComponent gainComponent;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessorEditor)

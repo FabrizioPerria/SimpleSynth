@@ -5,14 +5,18 @@
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor(AudioPluginAudioProcessor &p)
 	: AudioProcessorEditor(&p), processorRef(p), envelopeComponent(p.getApvts()),
-	  oscillatorComponent(p.getApvts(), "OSC_WAVETYPE", "OSC_GAIN", "OSC_LFO_FREQ", "OSC_LFO_DEPTH", "Oscillator"),
+	  oscillator0(p.getApvts(), "OSC_WAVETYPE0", "OSC_GAIN0", "OSC_LFO_FREQ0", "OSC_LFO_DEPTH0", "Oscillator 0"),
+	  oscillator1(p.getApvts(), "OSC_WAVETYPE1", "OSC_GAIN1", "OSC_LFO_FREQ1", "OSC_LFO_DEPTH1", "Oscillator 1"),
+	  oscillator2(p.getApvts(), "OSC_WAVETYPE2", "OSC_GAIN2", "OSC_LFO_FREQ2", "OSC_LFO_DEPTH2", "Oscillator 2"),
 	  gainComponent(p.getApvts(), "OUTPUT_GAIN")
 {
 
 	setSize(800, 600);
 
 	addAndMakeVisible(envelopeComponent);
-	addAndMakeVisible(oscillatorComponent);
+	addAndMakeVisible(oscillator0);
+	addAndMakeVisible(oscillator1);
+	addAndMakeVisible(oscillator2);
 	addAndMakeVisible(gainComponent);
 }
 
@@ -31,7 +35,9 @@ void AudioPluginAudioProcessorEditor::resized()
 	FlexBox oscillators;
 	oscillators.flexDirection = FlexBox::Direction::column;
 
-	oscillators.items.add(FlexItem(oscillatorComponent).withFlex(1.0f).withMargin(10));
+	oscillators.items.add(FlexItem(oscillator0).withFlex(1.0f).withMargin(10));
+	oscillators.items.add(FlexItem(oscillator1).withFlex(1.0f).withMargin(10));
+	oscillators.items.add(FlexItem(oscillator2).withFlex(1.0f).withMargin(10));
 
 	FlexBox fb;
 	fb.flexDirection = FlexBox::Direction::row;

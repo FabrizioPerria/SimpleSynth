@@ -5,6 +5,7 @@
 #include "SynthVoice.h"
 #include "utils/OscillatorType.h"
 
+#define NUM_VOICES 3
 //==============================================================================
 AudioPluginAudioProcessor::AudioPluginAudioProcessor()
 	: AudioProcessor(BusesProperties()
@@ -18,7 +19,8 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
 	  apvts(*this, nullptr, "PARAMETERS", createParams())
 {
 	synth.addSound(new SynthSound());
-	synth.addVoice(new SynthVoice());
+	for (auto voices = 0; voices < NUM_VOICES; voices++)
+		synth.addVoice(new SynthVoice());
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -143,12 +145,13 @@ void AudioPluginAudioProcessor::setupEnvelope(SynthVoice *voice)
 	voice->updateEnvelope(attack, decay, sustain, release);
 }
 
-void AudioPluginAudioProcessor::setupOscillator(SynthVoice *voice)
+void AudioPluginAudioProcessor::setupOscillator(SynthVoice *voice, const int voiceIndex)
 {
-	auto type = OscillatorType::fromInt(static_cast<int>(apvts.getRawParameterValue("OSC_WAVETYPE")->load()));
-	auto level = apvts.getRawParameterValue("OSC_GAIN")->load();
-	auto lfoFreq = apvts.getRawParameterValue("OSC_LFO_FREQ")->load();
-	auto lfoDepth = apvts.getRawParameterValue("OSC_LFO_DEPTH")->load();
+	auto type = OscillatorType::fromInt(
+		static_cast<int>(apvts.getRawParameterValue("OSC_WAVETYPE" + std::to_string(voiceIndex))->load()));
+	auto level = apvts.getRawParameterValue("OSC_GAIN" + std::to_string(voiceIndex))->load();
+	auto lfoFreq = apvts.getRawParameterValue("OSC_LFO_FREQ" + std::to_string(voiceIndex))->load();
+	auto lfoDepth = apvts.getRawParameterValue("OSC_LFO_DEPTH" + std::to_string(voiceIndex))->load();
 	voice->updateOscillator(type, level, lfoFreq, lfoDepth);
 }
 
@@ -174,7 +177,7 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
 		if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
 		{
 			setupEnvelope(voice);
-			setupOscillator(voice);
+			setupOscillator(voice, i);
 			setupOutputGain();
 		}
 	}
@@ -223,14 +226,21 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 {
 	juce::AudioProcessorValueTreeState::ParameterLayout paramLayout;
 
-	paramLayout.add(std::make_unique<juce::AudioParameterChoice>(ParameterID{"OSC_WAVETYPE", 1}, "Oscillator",
-																 OscillatorType::toStringArray(), 2));
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"OSC_GAIN", 1}, "Gain",
-																NormalisableRange<float>{-40.0f, 0.2f, 0.1f}, -10.0f));
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"OSC_LFO_FREQ", 1}, "LFO Frequency",
-																NormalisableRange<float>{0.0f, 1000.0f, 1.0f}, 5.0f));
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"OSC_LFO_DEPTH", 1}, "LFO Depth",
-																NormalisableRange<float>{0.0f, 1000.0f, 1.0f}, 500.0f));
+	for (int voicesIndex = 0; voicesIndex < NUM_VOICES; voicesIndex++)
+	{
+		paramLayout.add(std::make_unique<juce::AudioParameterChoice>(
+			ParameterID{"OSC_WAVETYPE" + std::to_string(voicesIndex), 1}, "Oscillator " + std::to_string(voicesIndex),
+			OscillatorType::toStringArray(), 2));
+		paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
+			ParameterID{"OSC_GAIN" + std::to_string(voicesIndex), 1}, "Gain " + std::to_string(voicesIndex),
+			NormalisableRange<float>{-40.0f, 0.2f, 0.1f}, -10.0f));
+		paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
+			ParameterID{"OSC_LFO_FREQ" + std::to_string(voicesIndex), 1},
+			"LFO Frequency " + std::to_string(voicesIndex), NormalisableRange<float>{0.0f, 1000.0f, 1.0f}, 5.0f));
+		paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
+			ParameterID{"OSC_LFO_DEPTH" + std::to_string(voicesIndex), 1}, "LFO Depth " + std::to_string(voicesIndex),
+			NormalisableRange<float>{0.0f, 1000.0f, 1.0f}, 500.0f));
+	}
 
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"ATTACK", 1}, "Attack",
 																NormalisableRange<float>{0.1f, 1.0f}, 0.8f));
