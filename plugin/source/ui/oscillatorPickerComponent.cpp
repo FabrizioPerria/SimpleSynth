@@ -22,6 +22,6 @@ void OscillatorPickerComponent::resized()
 {
 	juce::FlexBox fb;
 
-	fb.items.add(FlexItem(radioButton).withFlex(1.0f).withMaxHeight(50));
+	fb.items.add(FlexItem(radioButton).withFlex(1.0f));
 	fb.performLayout(getLocalBounds().reduced(10));
 }

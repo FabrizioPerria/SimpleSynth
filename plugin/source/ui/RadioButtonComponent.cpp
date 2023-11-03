@@ -26,7 +26,7 @@ void RadioButtonComponent::removeListener(juce::Button::Listener *listener)
 void RadioButtonComponent::resized()
 {
 	juce::FlexBox fb;
-	fb.flexDirection = juce::FlexBox::Direction::row;
+	fb.flexDirection = juce::FlexBox::Direction::column;
 	fb.flexWrap = juce::FlexBox::Wrap::wrap;
 
 	for (auto &button : buttons)

@@ -17,8 +17,8 @@ class OscillatorComponent : public juce::GroupComponent
 
   private:
 	OscillatorPickerComponent oscillatorPicker;
-	LabeledSlider lfoFrequency;
-	LabeledSlider lfoDepth;
+	IconSlider lfoFrequency;
+	IconSlider lfoDepth;
 	IconSlider gain;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscillatorComponent)
