@@ -5,9 +5,10 @@ LabeledSlider::LabeledSlider(juce::AudioProcessorValueTreeState &apvts, const ju
 {
 	attachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, parameterID, slider);
 	label.setText(name, juce::dontSendNotification);
+	label.setFont(10.0f);
 	label.setJustificationType(juce::Justification::centred);
 	addAndMakeVisible(label);
-	slider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+	setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
 	slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 50, 20);
 	addAndMakeVisible(slider);
 }
@@ -16,8 +17,9 @@ void LabeledSlider::resized()
 {
 	juce::FlexBox fb;
 
-	fb.flexDirection = slider.getSliderStyle() == Slider::SliderStyle::LinearVertical ? juce::FlexBox::Direction::column
-																					  : juce::FlexBox::Direction::row;
+	fb.flexDirection = slider.getSliderStyle() == Slider::SliderStyle::LinearHorizontal
+						   ? juce::FlexBox::Direction::row
+						   : juce::FlexBox::Direction::column;
 
 	fb.items.add(juce::FlexItem(label).withFlex(0.1f));
 	fb.items.add(juce::FlexItem(slider).withFlex(1.0f));
@@ -25,7 +27,7 @@ void LabeledSlider::resized()
 	fb.performLayout(getLocalBounds());
 }
 
-void LabeledSlider::setSliderOrientation(juce::Slider::SliderStyle style)
+void LabeledSlider::setSliderStyle(juce::Slider::SliderStyle style)
 {
 	slider.setSliderStyle(style);
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "ui/IconSlider.h"
 #include "ui/OscillatorPickerComponent.h"
 #include "ui/GainComponent.h"
 #include "ui/LabeledSlider.h"
@@ -18,7 +19,7 @@ class OscillatorComponent : public juce::GroupComponent
 	OscillatorPickerComponent oscillatorPicker;
 	LabeledSlider lfoFrequency;
 	LabeledSlider lfoDepth;
-	LabeledSlider gain;
+	IconSlider gain;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscillatorComponent)
 };

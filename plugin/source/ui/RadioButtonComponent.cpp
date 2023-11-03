@@ -32,7 +32,7 @@ void RadioButtonComponent::resized()
 	for (auto &button : buttons)
 		fb.items.add(juce::FlexItem(*button).withFlex(1));
 
-	fb.performLayout(getLocalBounds().reduced(10));
+	fb.performLayout(getLocalBounds());
 }
 
 void RadioButtonComponent::addButton(const char *svg, const size_t size, const juce::String name)

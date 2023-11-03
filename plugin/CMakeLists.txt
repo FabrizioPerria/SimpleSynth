@@ -19,6 +19,7 @@ juce_add_binary_data(BinaryData SOURCES
     resources/sine.svg
     resources/square.svg
     resources/sawtooth.svg
+    resources/volume.svg
 )
 
 get_target_property(juce_library_code ${PROJECT_NAME} JUCE_GENERATED_SOURCES_DIRECTORY)
@@ -36,6 +37,7 @@ target_sources(${PROJECT_NAME}
         source/data/EnvelopeData.cpp
         source/data/OscillatorData.cpp
         source/ui/LabeledSlider.cpp
+        source/ui/IconSlider.cpp
         source/ui/EnvelopeComponent.cpp
         source/ui/RadioButtonComponent.cpp
         source/ui/OscillatorPickerComponent.cpp

@@ -2,6 +2,7 @@
 
 #include "JuceHeader.h"
 #include <functional>
+#include "utils/SVGData.h"
 
 class OscillatorType
 {
@@ -14,12 +15,6 @@ class OscillatorType
 		SAW,
 		lastValue = SAW
 	};
-
-	typedef struct SVGData
-	{
-		const char *svg;
-		const size_t size;
-	} SVGData;
 
 	static std::function<float(float)> getFunction(OscillatorType::Value oscillatorType)
 	{

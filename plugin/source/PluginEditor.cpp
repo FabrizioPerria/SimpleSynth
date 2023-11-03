@@ -28,10 +28,15 @@ void AudioPluginAudioProcessorEditor::paint(juce::Graphics &g)
 
 void AudioPluginAudioProcessorEditor::resized()
 {
+	FlexBox oscillators;
+	oscillators.flexDirection = FlexBox::Direction::column;
+
+	oscillators.items.add(FlexItem(oscillatorComponent).withFlex(1.0f).withMargin(10));
+
 	FlexBox fb;
 	fb.flexDirection = FlexBox::Direction::row;
 
-	fb.items.add(FlexItem(oscillatorComponent).withFlex(1.0f).withMargin(10));
+	fb.items.add(FlexItem(oscillators).withFlex(1.0f).withMargin(10));
 	fb.items.add(FlexItem(envelopeComponent).withFlex(1.0f).withMargin(10));
 	fb.items.add(FlexItem(gainComponent).withFlex(0.2f).withMargin(10));
 
