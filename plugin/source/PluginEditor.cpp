@@ -5,7 +5,7 @@
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor(AudioPluginAudioProcessor &p)
 	: AudioProcessorEditor(&p), processorRef(p), envelopeComponent(p.getApvts()),
-	  oscillatorComponent(p.getApvts(), "OSC_WAVETYPE", "OSC_GAIN", "Oscillator"),
+	  oscillatorComponent(p.getApvts(), "OSC_WAVETYPE", "OSC_GAIN", "OSC_LFO_FREQ", "OSC_LFO_DEPTH", "Oscillator"),
 	  gainComponent(p.getApvts(), "OUTPUT_GAIN")
 {
 
