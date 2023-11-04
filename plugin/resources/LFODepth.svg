@@ -1,1 +1,77 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:black;stroke-miterlimit:10;stroke-width:1.83px;}</style></defs><line class="cls-1" x1="2.83" y1="8.33" x2="2.83" y2="15.67"/><line class="cls-1" x1="7.42" y1="4.67" x2="7.42" y2="19.33"/><line class="cls-1" x1="21.17" y1="8.33" x2="21.17" y2="15.67"/><line class="cls-1" x1="16.58" y1="4.67" x2="16.58" y2="19.33"/><line class="cls-1" x1="12" y1="1" x2="12" y2="23"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   data-name="Layer 1"
+   viewBox="0 0 234.70546 256"
+   version="1.1"
+   sodipodi:docname="lfoDepth.svg"
+   width="234.70546"
+   height="256"
+   inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="9.8333333"
+     inkscape:cx="10.067797"
+     inkscape:cy="10.983051"
+     inkscape:window-width="1312"
+     inkscape:window-height="449"
+     inkscape:window-x="0"
+     inkscape:window-y="37"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Layer_1" />
+  <defs
+     id="defs1">
+    <style
+       id="style1">.cls-1{fill:none;stroke:black;stroke-miterlimit:10;stroke-width:1.83px;}</style>
+  </defs>
+  <g
+     id="g5"
+     transform="matrix(11.636364,0,0,11.636364,-22.283636,-11.636364)">
+    <line
+       class="cls-1"
+       x1="2.8299999"
+       y1="8.3299999"
+       x2="2.8299999"
+       y2="15.67"
+       id="line1" />
+    <line
+       class="cls-1"
+       x1="7.4200001"
+       y1="4.6700001"
+       x2="7.4200001"
+       y2="19.33"
+       id="line2" />
+    <line
+       class="cls-1"
+       x1="21.17"
+       y1="8.3299999"
+       x2="21.17"
+       y2="15.67"
+       id="line3" />
+    <line
+       class="cls-1"
+       x1="16.58"
+       y1="4.6700001"
+       x2="16.58"
+       y2="19.33"
+       id="line4" />
+    <line
+       class="cls-1"
+       x1="12"
+       y1="1"
+       x2="12"
+       y2="23"
+       id="line5" />
+  </g>
+</svg>

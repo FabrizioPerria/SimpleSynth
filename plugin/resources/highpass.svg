@@ -1,4 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg fill="black" width="800px" height="800px" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-    <path d="M231.007 68.729c0-2.206-1.787-4.995-4.007-4.995h-85.499c-6.466 0-19.531 7.705-22.66 15.97l-55.92 85.647c-3.624 5.55-11.93 10.05-18.559 10.05H28.167c-2.206 0-3.994 2.787-3.994 5.007v8.985a4.005 4.005 0 0 0 3.998 4.007h22.713c8.832 0 20.495-8.703 23.588-16.987l56.167-84.189c3.68-5.517 12.04-9.99 18.668-9.99h77.695c2.212 0 4.005-2.797 4.005-4.994v-8.51z" fill-rule="evenodd"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#000000"
+   width="256"
+   height="160.48859"
+   viewBox="0 0 81.92 51.356348"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="highpass.svg"
+   inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.295"
+     inkscape:cx="325.42373"
+     inkscape:cy="200"
+     inkscape:window-width="1312"
+     inkscape:window-height="449"
+     inkscape:window-x="0"
+     inkscape:window-y="37"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
+  <path
+     d="M 81.92,1.978352 C 81.92,1.104629 81.21223,0 80.33296,0 H 46.469679 C 43.908714,0 38.734106,3.051692 37.494815,6.325181 L 15.346781,40.24708 c -1.435345,2.19817 -4.725072,3.98047 -7.3505968,3.98047 h -6.414295 c -0.873723,0 -1.58188900006557,1.10383 -1.58188900006557,1.9831 v 3.55866 A 1.586246,1.586246 0 0 0 1.5834732,51.35635 H 10.57933 c 3.498058,0 8.117381,-3.44697 9.342414,-6.72798 L 42.167606,11.283932 C 43.62513,9.098834 46.936246,7.327229 49.561374,7.327229 H 80.33375 c 0.8761,0 1.58625,-1.107798 1.58625,-1.977956 V 1.978748 Z"
+     fill-rule="evenodd"
+     id="path1"
+     style="stroke-width:0.396066" />
 </svg>
