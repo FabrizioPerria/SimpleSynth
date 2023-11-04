@@ -1,9 +1,9 @@
 #include "data/OscillatorData.h"
+#include "utils/FilterType.h"
 
-OscillatorData::OscillatorData() : lfoDepth(0.0f), fmMod(0.0f), currentNote(0)
+OscillatorData::OscillatorData() : currentNote(0)
 {
 	setOscillatorType(OscillatorType::SINE);
-	lfo.initialise(OscillatorType::getFunction(OscillatorType::SINE));
 }
 
 void OscillatorData::setOscillatorType(OscillatorType waveType)
@@ -20,19 +20,14 @@ void OscillatorData::prepareToPlay(juce::dsp::ProcessSpec &spec)
 
 void OscillatorData::setOscillatorFrequency(int midiNoteNumber)
 {
-	setFrequency(std::abs(static_cast<float>(juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber)) + fmMod));
+	setFrequency(
+		std::abs(static_cast<float>(juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber)) + lfo.getFrequency()));
 	currentNote = midiNoteNumber;
 }
 
 void OscillatorData::getNextAudioBlock(juce::dsp::AudioBlock<float> &audioBlock)
 {
-	for (auto channel = 0; channel < ( int ) audioBlock.getNumChannels(); ++channel)
-	{
-		for (auto sample = 0; sample < ( int ) audioBlock.getNumSamples(); ++sample)
-		{
-			fmMod = lfo.processSample(audioBlock.getSample(channel, sample)) * lfoDepth;
-		}
-	}
+	lfo.process(audioBlock);
 	process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
 	gain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
 }
@@ -44,7 +39,14 @@ void OscillatorData::setOscillatorLevel(const float level)
 
 void OscillatorData::setLFO(const float frequency, const float depth)
 {
-	lfo.setFrequency(frequency);
-	lfoDepth = depth;
+	lfo.setParameters(frequency, depth);
 	setOscillatorFrequency(currentNote);
+}
+
+void OscillatorData::setFilterType(const FilterType type)
+{
+}
+
+void OscillatorData::setFilter(const float cutoff, const float resonance)
+{
 }

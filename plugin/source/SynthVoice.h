@@ -5,6 +5,7 @@
 #include "data/EnvelopeData.h"
 #include "data/OscillatorData.h"
 #include "utils/OscillatorType.h"
+#include "utils/FilterType.h"
 
 class SynthVoice : public juce::SynthesiserVoice
 {
@@ -17,7 +18,8 @@ class SynthVoice : public juce::SynthesiserVoice
 	void prepareToPlay(double sampleRate, int samplesPerBlock, int numOutputChannels);
 	void renderNextBlock(AudioBuffer<float> &outputBuffer, int startSample, int numSamples) override;
 	void updateEnvelope(const float attack, const float decay, const float sustain, const float release);
-	void updateOscillator(const OscillatorType type, const float level, const float lfoFreq, const float lfoDepth);
+	void updateOscillator(const OscillatorType type, const float level, const float lfoFreq, const float lfoDepth,
+						  const FilterType filterType, const float filterCutoff, const float filterResonance);
 
   private:
 	EnvelopeData envelope;

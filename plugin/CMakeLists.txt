@@ -49,6 +49,8 @@ target_sources(${PROJECT_NAME}
         source/attachments/RadioButtonAttachment.cpp
         source/data/EnvelopeData.cpp
         source/data/OscillatorData.cpp
+        source/data/LFOData.cpp
+        source/data/FilterData.cpp
         source/ui/EnvelopeComponent.cpp
         source/ui/FilterComponent.cpp
         source/ui/FilterPickerComponent.cpp

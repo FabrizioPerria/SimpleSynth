@@ -81,10 +81,13 @@ void SynthVoice::updateEnvelope(const float attack, const float decay, const flo
 	envelope.update(attack, decay, sustain, release);
 }
 
-void SynthVoice::updateOscillator(const OscillatorType type, const float level, const float lfoFreq,
-								  const float lfoDepth)
+void SynthVoice::updateOscillator(const OscillatorType oscillatorType, const float level, const float lfoFreq,
+								  const float lfoDepth, const FilterType filterType, const float filterCutoff,
+								  const float filterResonance)
 {
-	oscillator.setOscillatorType(type);
+	oscillator.setOscillatorType(oscillatorType);
 	oscillator.setOscillatorLevel(level);
 	oscillator.setLFO(lfoFreq, lfoDepth);
+	oscillator.setFilterType(filterType);
+	oscillator.setFilter(filterCutoff, filterResonance);
 }

@@ -10,7 +10,7 @@ LabeledSliderComponent::LabeledSliderComponent(juce::AudioProcessorValueTreeStat
 	addAndMakeVisible(label);
 	setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
 	slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 50, 20);
-	slider.onValueChange = [this]{ updateTooltip(); };
+	slider.onValueChange = [this] { updateTooltip(); };
 	addAndMakeVisible(slider);
 	updateTooltip();
 }
@@ -36,5 +36,5 @@ void LabeledSliderComponent::setSliderStyle(juce::Slider::SliderStyle style)
 
 void LabeledSliderComponent::updateTooltip()
 {
-	slider.setTooltip(std::to_string(( int ) slider.getValue()));
+	slider.setTooltip(std::to_string(slider.getValue()));
 }

@@ -38,5 +38,5 @@ void IconSliderComponent::setSliderStyle(juce::Slider::SliderStyle style)
 
 void IconSliderComponent::updateTooltip()
 {
-	slider.setTooltip(std::to_string(( int ) slider.getValue()));
+	slider.setTooltip(std::to_string(slider.getValue()));
 }
