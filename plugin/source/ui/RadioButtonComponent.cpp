@@ -2,7 +2,7 @@
 #include "BinaryData.h"
 #include <memory>
 
-RadioButtonComponent::RadioButtonComponent()
+RadioButtonComponent::RadioButtonComponent(RadioButtonDirection buttonLayout) : direction(buttonLayout)
 {
 }
 
@@ -26,7 +26,7 @@ void RadioButtonComponent::removeListener(juce::Button::Listener *listener)
 void RadioButtonComponent::resized()
 {
 	juce::FlexBox fb;
-	fb.flexDirection = juce::FlexBox::Direction::column;
+	fb.flexDirection = direction;
 	fb.flexWrap = juce::FlexBox::Wrap::wrap;
 
 	for (auto &button : buttons)

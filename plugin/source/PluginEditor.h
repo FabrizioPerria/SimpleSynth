@@ -4,6 +4,7 @@
 #include "ui/EnvelopeComponent.h"
 #include "ui/OscillatorComponent.h"
 #include "ui/GainComponent.h"
+#include "ui/FilterComponent.h"
 
 //==============================================================================
 class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
@@ -21,10 +22,11 @@ class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
 	// access the processor object that created it.
 	AudioPluginAudioProcessor &processorRef;
 
-	EnvelopeComponent envelopeComponent;
 	OscillatorComponent oscillator0;
 	OscillatorComponent oscillator1;
 	OscillatorComponent oscillator2;
+	EnvelopeComponent envelopeComponent;
+	FilterComponent filterComponent;
 	GainComponent gainComponent;
 
 	std::unique_ptr<juce::TooltipWindow> tooltipWindow;

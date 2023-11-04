@@ -1,6 +1,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "ui/IconSliderComponent.h"
 
 class GainComponent : public juce::GroupComponent
 {
@@ -11,10 +12,7 @@ class GainComponent : public juce::GroupComponent
 	void resized() override;
 
   private:
-	juce::Slider gainSlider;
-	std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainSliderAttachment;
-
-	void updateTooltip();
+	IconSliderComponent gainSlider;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GainComponent)
 };

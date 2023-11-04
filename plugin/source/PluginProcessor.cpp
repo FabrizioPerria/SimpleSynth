@@ -21,7 +21,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
 {
 	synth.addSound(new SynthSound());
 	for (auto voices = 0; voices < NUM_VOICES; voices++)
-		synth.addVoice(new SynthVoice());
+		synth.addVoice(new SynthVoice(envelope));
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -98,13 +98,21 @@ void AudioPluginAudioProcessor::changeProgramName(int index, const juce::String 
 void AudioPluginAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
 	synth.setCurrentPlaybackSampleRate(sampleRate);
+
+	dsp::ProcessSpec spec;
+	spec.sampleRate = sampleRate;
+	spec.maximumBlockSize = ( uint32_t ) samplesPerBlock;
+	spec.numChannels = ( uint32_t ) getTotalNumOutputChannels();
+
 	for (auto i = 0; i < synth.getNumVoices(); ++i)
 	{
 		if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
 		{
-			voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+			voice->prepareToPlay(spec);
 		}
 	}
+	envelope.preparetoPlay(spec);
+	filter.prepareToPlay(spec);
 }
 
 void AudioPluginAudioProcessor::releaseResources()
@@ -137,13 +145,23 @@ bool AudioPluginAudioProcessor::isBusesLayoutSupported(const BusesLayout &layout
 #endif
 }
 
-void AudioPluginAudioProcessor::setupEnvelope(SynthVoice *voice)
+void AudioPluginAudioProcessor::setupEnvelope()
 {
 	auto attack = apvts.getRawParameterValue("ATTACK")->load();
 	auto decay = apvts.getRawParameterValue("DECAY")->load();
 	auto sustain = apvts.getRawParameterValue("SUSTAIN")->load();
 	auto release = apvts.getRawParameterValue("RELEASE")->load();
-	voice->updateEnvelope(attack, decay, sustain, release);
+	envelope.update(attack, decay, sustain, release);
+}
+
+void AudioPluginAudioProcessor::setupFilter()
+{
+	auto filterType = FilterType::fromInt(static_cast<int>(apvts.getRawParameterValue("FILTER_TYPE")->load()));
+	auto filterCutoff = apvts.getRawParameterValue("FILTER_CUTOFF")->load();
+	auto filterResonance = apvts.getRawParameterValue("FILTER_RESONANCE")->load();
+
+	filter.setFilterType(filterType);
+	filter.setParameters(filterCutoff, filterResonance);
 }
 
 void AudioPluginAudioProcessor::setupOscillator(SynthVoice *voice, const int voiceIndex)
@@ -153,11 +171,7 @@ void AudioPluginAudioProcessor::setupOscillator(SynthVoice *voice, const int voi
 	auto level = apvts.getRawParameterValue("OSC_GAIN" + std::to_string(voiceIndex))->load();
 	auto lfoFreq = apvts.getRawParameterValue("OSC_LFO_FREQ" + std::to_string(voiceIndex))->load();
 	auto lfoDepth = apvts.getRawParameterValue("OSC_LFO_DEPTH" + std::to_string(voiceIndex))->load();
-	auto filterType = FilterType::fromInt(
-		static_cast<int>(apvts.getRawParameterValue("OSC_FILTERTYPE" + std::to_string(voiceIndex))->load()));
-	auto filterCutoff = apvts.getRawParameterValue("OSC_FILTER_CUTOFF" + std::to_string(voiceIndex))->load();
-	auto filterResonance = apvts.getRawParameterValue("OSC_FILTER_RESONANCE" + std::to_string(voiceIndex))->load();
-	voice->updateOscillator(type, level, lfoFreq, lfoDepth, filterType, filterCutoff, filterResonance);
+	voice->updateOscillator(type, level, lfoFreq, lfoDepth);
 }
 
 void AudioPluginAudioProcessor::setupOutputGain()
@@ -181,14 +195,17 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
 	{
 		if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
 		{
-			setupEnvelope(voice);
+			setupEnvelope();
 			setupOscillator(voice, i);
+			setupFilter();
 			setupOutputGain();
 		}
 	}
 
 	synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 	juce::dsp::AudioBlock<float> audioBlock{buffer};
+	filter.process(audioBlock);
+	envelope.process(buffer);
 	outputGain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
 }
 
@@ -231,11 +248,38 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 {
 	juce::AudioProcessorValueTreeState::ParameterLayout paramLayout;
 
+	setupOscillatorVoiceParameters(paramLayout);
+	setupEnvelopeParameters(paramLayout);
+	setupFilterParameters(paramLayout);
+	setupOutputGainParameters(paramLayout);
+
+	return paramLayout;
+}
+
+void AudioPluginAudioProcessor::setupOscillatorVoiceParameters(
+	juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout)
+{
 	for (int voicesIndex = 0; voicesIndex < NUM_VOICES; voicesIndex++)
 	{
-		setupOscillatorVoiceParameters(paramLayout, voicesIndex);
+		paramLayout.add(std::make_unique<juce::AudioParameterChoice>(
+			ParameterID{"OSC_WAVETYPE" + std::to_string(voicesIndex), 1}, "Oscillator " + std::to_string(voicesIndex),
+			OscillatorType::toStringArray(), 0));
+		paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
+			ParameterID{"OSC_GAIN" + std::to_string(voicesIndex), 1}, "Gain " + std::to_string(voicesIndex),
+			NormalisableRange<float>{-40.0f, 0.2f, 0.1f}, -10.0f));
+		paramLayout.add(
+			std::make_unique<juce::AudioParameterFloat>(ParameterID{"OSC_LFO_FREQ" + std::to_string(voicesIndex), 1},
+														"LFO Frequency " + std::to_string(voicesIndex),
+														NormalisableRange<float>{0.0f, 1000.0f, 0.01f, 0.3f}, 5.0f));
+		paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
+			ParameterID{"OSC_LFO_DEPTH" + std::to_string(voicesIndex), 1}, "LFO Depth " + std::to_string(voicesIndex),
+			NormalisableRange<float>{0.0f, 1000.0f, 0.01f, 0.3f}, 500.0f));
 	}
+}
 
+void AudioPluginAudioProcessor::setupEnvelopeParameters(
+	juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout)
+{
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"ATTACK", 1}, "Attack",
 																NormalisableRange<float>{0.1f, 1.0f}, 0.8f));
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"DECAY", 1}, "Decay",
@@ -244,37 +288,24 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 																NormalisableRange<float>{0.1f, 1.0f}, 1.0f));
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"RELEASE", 1}, "Release",
 																NormalisableRange<float>{0.1f, 3.0f}, 1.5f));
-
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"OUTPUT_GAIN", 1}, "Gain",
-																NormalisableRange<float>{-40.0f, 0.2f, 0.1f}, -10.0f));
-
-	return paramLayout;
 }
 
-void AudioPluginAudioProcessor::setupOscillatorVoiceParameters(
-	juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout, int voicesIndex)
+void AudioPluginAudioProcessor::setupFilterParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout)
 {
-	paramLayout.add(std::make_unique<juce::AudioParameterChoice>(
-		ParameterID{"OSC_WAVETYPE" + std::to_string(voicesIndex), 1}, "Oscillator " + std::to_string(voicesIndex),
-		OscillatorType::toStringArray(), 0));
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
-		ParameterID{"OSC_GAIN" + std::to_string(voicesIndex), 1}, "Gain " + std::to_string(voicesIndex),
-		NormalisableRange<float>{-40.0f, 0.2f, 0.1f}, -10.0f));
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
-		ParameterID{"OSC_LFO_FREQ" + std::to_string(voicesIndex), 1}, "LFO Frequency " + std::to_string(voicesIndex),
-		NormalisableRange<float>{0.0f, 1000.0f, 0.01f, 0.3f}, 5.0f));
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
-		ParameterID{"OSC_LFO_DEPTH" + std::to_string(voicesIndex), 1}, "LFO Depth " + std::to_string(voicesIndex),
-		NormalisableRange<float>{0.0f, 1000.0f, 0.01f, 0.3f}, 500.0f));
-	paramLayout.add(std::make_unique<juce::AudioParameterChoice>(
-		ParameterID{"OSC_FILTERTYPE" + std::to_string(voicesIndex), 1}, "Filter " + std::to_string(voicesIndex),
-		FilterType::toStringArray(), 0));
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
-		ParameterID{"OSC_FILTER_CUTOFF" + std::to_string(voicesIndex), 1},
-		"Filter Cutoff " + std::to_string(voicesIndex), NormalisableRange<float>{20.0f, 20000.0f, 0.1f, 0.6f}, 200.0f));
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(
-		ParameterID{"OSC_FILTER_RESONANCE" + std::to_string(voicesIndex), 1},
-		"Filter Resonance " + std::to_string(voicesIndex), NormalisableRange<float>{1.0f, 10.0f, 0.1f}, 1.0f));
+	paramLayout.add(std::make_unique<juce::AudioParameterChoice>(ParameterID{"FILTER_TYPE", 1}, "Filter Type",
+																 FilterType::toStringArray(), 0));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"FILTER_CUTOFF", 1}, "Filter Cutoff",
+																NormalisableRange<float>{20.0f, 20000.0f, 0.1f, 0.6f},
+																200.0f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"FILTER_RESONANCE", 1}, "Filter Resonance",
+																NormalisableRange<float>{1.0f, 10.0f, 0.1f}, 1.0f));
+}
+
+void AudioPluginAudioProcessor::setupOutputGainParameters(
+	juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout)
+{
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"OUTPUT_GAIN", 1}, "Gain",
+																NormalisableRange<float>{-40.0f, 0.2f, 0.1f}, -10.0f));
 }
 
 juce::AudioProcessorValueTreeState &AudioPluginAudioProcessor::getApvts()

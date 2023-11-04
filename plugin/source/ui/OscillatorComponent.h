@@ -12,8 +12,7 @@ class OscillatorComponent : public juce::GroupComponent
 {
   public:
 	OscillatorComponent(juce::AudioProcessorValueTreeState &apvts, juce::String pickerId, juce::String gainId,
-						juce::String lfoFrequencyId, juce::String lfoDepthId, juce::String filterId,
-						juce::String filterCutoffId, juce::String filterResonanceId, juce::String name);
+						juce::String lfoFrequencyId, juce::String lfoDepthId, juce::String name);
 	~OscillatorComponent() override;
 
 	void resized() override;
@@ -22,7 +21,6 @@ class OscillatorComponent : public juce::GroupComponent
 	OscillatorPickerComponent oscillatorPicker;
 	IconSliderComponent gain;
 	LFOComponent lfo;
-	FilterComponent filter;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscillatorComponent)
 };

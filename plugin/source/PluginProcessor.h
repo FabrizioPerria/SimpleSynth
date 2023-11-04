@@ -2,6 +2,8 @@
 
 #include <JuceHeader.h>
 #include "SynthVoice.h"
+#include "data/EnvelopeData.h"
+#include "data/FilterData.h"
 
 //==============================================================================
 class AudioPluginAudioProcessor : public juce::AudioProcessor
@@ -49,14 +51,20 @@ class AudioPluginAudioProcessor : public juce::AudioProcessor
 
   private:
 	juce::Synthesiser synth;
+	EnvelopeData envelope;
+	FilterData filter;
 	juce::dsp::Gain<float> outputGain;
 	juce::AudioProcessorValueTreeState apvts;
 
-	void setupEnvelope(SynthVoice *voice);
 	void setupOscillator(SynthVoice *voice, const int voiceIndex);
+	void setupEnvelope();
+	void setupFilter();
 	void setupOutputGain();
-	void setupOscillatorVoiceParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout,
-										int voicesIndex);
+
+	void setupOscillatorVoiceParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout);
+	void setupEnvelopeParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout);
+	void setupFilterParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout);
+	void setupOutputGainParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout);
 
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)

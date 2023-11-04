@@ -1,7 +1,9 @@
 #include "ui/FilterPickerComponent.h"
+#include "ui/RadioButtonComponent.h"
 #include "utils/FilterType.h"
 
 FilterPickerComponent::FilterPickerComponent(juce::AudioProcessorValueTreeState &apvts, juce::String parameterID)
+	: radioButton(RadioButtonDirection::row)
 {
 	for (auto waveType : FilterType::toArray())
 	{

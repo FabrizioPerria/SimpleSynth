@@ -5,21 +5,20 @@
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor(AudioPluginAudioProcessor &p)
 	: AudioProcessorEditor(&p), processorRef(p),
+	  oscillator0(p.getApvts(), "OSC_WAVETYPE0", "OSC_GAIN0", "OSC_LFO_FREQ0", "OSC_LFO_DEPTH0", "Oscillator 0"),
+	  oscillator1(p.getApvts(), "OSC_WAVETYPE1", "OSC_GAIN1", "OSC_LFO_FREQ1", "OSC_LFO_DEPTH1", "Oscillator 1"),
+	  oscillator2(p.getApvts(), "OSC_WAVETYPE2", "OSC_GAIN2", "OSC_LFO_FREQ2", "OSC_LFO_DEPTH2", "Oscillator 2"),
 	  envelopeComponent(p.getApvts(), "ATTACK", "DECAY", "SUSTAIN", "RELEASE", "Envelope"),
-	  oscillator0(p.getApvts(), "OSC_WAVETYPE0", "OSC_GAIN0", "OSC_LFO_FREQ0", "OSC_LFO_DEPTH0", "OSC_FILTERTYPE0",
-				  "OSC_FILTER_CUTOFF0", "OSC_FILTER_RESONANCE0", "Oscillator 0"),
-	  oscillator1(p.getApvts(), "OSC_WAVETYPE1", "OSC_GAIN1", "OSC_LFO_FREQ1", "OSC_LFO_DEPTH1", "OSC_FILTERTYPE1",
-				  "OSC_FILTER_CUTOFF1", "OSC_FILTER_RESONANCE1", "Oscillator 1"),
-	  oscillator2(p.getApvts(), "OSC_WAVETYPE2", "OSC_GAIN2", "OSC_LFO_FREQ2", "OSC_LFO_DEPTH2", "OSC_FILTERTYPE2",
-				  "OSC_FILTER_CUTOFF2", "OSC_FILTER_RESONANCE2", "Oscillator 2"),
+	  filterComponent(p.getApvts(), "FILTER_TYPE", "FILTER_CUTOFF", "FILTER_RESONANCE", "Filter"),
 	  gainComponent(p.getApvts(), "OUTPUT_GAIN")
 {
 	setSize(800, 600);
 
-	addAndMakeVisible(envelopeComponent);
 	addAndMakeVisible(oscillator0);
 	addAndMakeVisible(oscillator1);
 	addAndMakeVisible(oscillator2);
+	addAndMakeVisible(filterComponent);
+	addAndMakeVisible(envelopeComponent);
 	addAndMakeVisible(gainComponent);
 	tooltipWindow = std::make_unique<juce::TooltipWindow>(this);
 }
@@ -43,12 +42,18 @@ void AudioPluginAudioProcessorEditor::resized()
 	oscillators.items.add(FlexItem(oscillator1).withFlex(1.0f).withMargin(10));
 	oscillators.items.add(FlexItem(oscillator2).withFlex(1.0f).withMargin(10));
 
+	FlexBox filterAndEnvelope;
+	filterAndEnvelope.flexDirection = FlexBox::Direction::column;
+
+	filterAndEnvelope.items.add(FlexItem(filterComponent).withFlex(1.0f).withMargin(10));
+	filterAndEnvelope.items.add(FlexItem(envelopeComponent).withFlex(1.0f).withMargin(10));
+
 	FlexBox fb;
 	fb.flexDirection = FlexBox::Direction::row;
 
 	fb.items.add(FlexItem(oscillators).withFlex(1.0f));
-	fb.items.add(FlexItem(envelopeComponent).withFlex(0.4f).withMargin(10));
-	fb.items.add(FlexItem(gainComponent).withFlex(0.1f).withMargin(10));
+	fb.items.add(FlexItem(filterAndEnvelope).withFlex(1.0f));
+	fb.items.add(FlexItem(gainComponent).withFlex(0.2f).withMargin(10));
 
 	fb.performLayout(getLocalBounds());
 }

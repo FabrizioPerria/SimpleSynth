@@ -2,9 +2,9 @@
 #include "utils/SVGData.h"
 
 IconSliderComponent::IconSliderComponent(juce::AudioProcessorValueTreeState &apvts, const juce::String &parameterID,
-										 SVGData svg)
+										 SVGData svg, IconSliderDirection sliderDirection)
 	: attachment(std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, parameterID, slider)),
-	  icon("Icon", juce::DrawableButton::ButtonStyle::ImageFitted)
+	  icon("Icon", juce::DrawableButton::ButtonStyle::ImageFitted), direction(sliderDirection)
 {
 	setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
 	slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 50, 20);
@@ -23,9 +23,9 @@ IconSliderComponent::IconSliderComponent(juce::AudioProcessorValueTreeState &apv
 void IconSliderComponent::resized()
 {
 	juce::FlexBox fb;
-	fb.flexDirection = juce::FlexBox::Direction::row;
+	fb.flexDirection = direction;
 
-	fb.items.add(juce::FlexItem(icon).withFlex(0.15f));
+	fb.items.add(juce::FlexItem(icon).withFlex(0.1f));
 	fb.items.add(juce::FlexItem(slider).withFlex(1.0f));
 
 	fb.performLayout(getLocalBounds().reduced(10));

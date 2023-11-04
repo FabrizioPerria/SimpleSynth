@@ -1,6 +1,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "ui/IconSliderComponent.h"
 #include "ui/LabeledSliderComponent.h"
 
 class EnvelopeComponent : public juce::GroupComponent
@@ -13,10 +14,10 @@ class EnvelopeComponent : public juce::GroupComponent
 	void resized() override;
 
   private:
-	LabeledSliderComponent attackSlider;
-	LabeledSliderComponent decaySlider;
-	LabeledSliderComponent sustainSlider;
-	LabeledSliderComponent releaseSlider;
+	IconSliderComponent attackSlider;
+	IconSliderComponent decaySlider;
+	IconSliderComponent sustainSlider;
+	IconSliderComponent releaseSlider;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EnvelopeComponent)
 };

@@ -1,6 +1,6 @@
 #include "data/FilterData.h"
 
-void FilterData::prepare(juce::dsp::ProcessSpec &spec)
+void FilterData::prepareToPlay(juce::dsp::ProcessSpec &spec)
 {
 	filter.reset();
 	filter.prepare(spec);

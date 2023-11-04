@@ -6,7 +6,7 @@
 class FilterData
 {
   public:
-	void prepare(juce::dsp::ProcessSpec &spec);
+	void prepareToPlay(juce::dsp::ProcessSpec &spec);
 	void process(juce::dsp::AudioBlock<float> &audioBlock);
 	void setParameters(const float cutoff, const float resonance);
 	void setFilterType(const FilterType filterType);

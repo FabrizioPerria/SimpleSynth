@@ -17,7 +17,6 @@ void OscillatorData::prepareToPlay(juce::dsp::ProcessSpec &spec)
 	prepare(spec);
 	gain.prepare(spec);
 	lfo.prepare(spec);
-	filter.prepare(spec);
 
 	isPrepared = true;
 }
@@ -35,7 +34,6 @@ void OscillatorData::getNextAudioBlock(juce::dsp::AudioBlock<float> &audioBlock)
 
 	lfo.process(audioBlock);
 	process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
-	filter.process(audioBlock);
 	gain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
 }
 
@@ -48,14 +46,4 @@ void OscillatorData::setLFO(const float frequency, const float depth)
 {
 	lfo.setParameters(frequency, depth);
 	setOscillatorFrequency(currentNote);
-}
-
-void OscillatorData::setFilterType(const FilterType type)
-{
-	filter.setFilterType(type);
-}
-
-void OscillatorData::setFilter(const float cutoff, const float resonance)
-{
-	filter.setParameters(cutoff, resonance);
 }

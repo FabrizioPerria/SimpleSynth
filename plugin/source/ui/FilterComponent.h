@@ -4,11 +4,11 @@
 #include "ui/IconSliderComponent.h"
 #include "ui/FilterPickerComponent.h"
 
-class FilterComponent : public juce::Component
+class FilterComponent : public juce::GroupComponent
 {
   public:
 	FilterComponent(juce::AudioProcessorValueTreeState &apvts, juce::String filterId, juce::String cutoffId,
-					juce::String resonanceId);
+					juce::String resonanceId, juce::String name);
 	void resized() override;
 
   private:

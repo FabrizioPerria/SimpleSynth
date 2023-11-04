@@ -3,29 +3,34 @@
 #include "utils/SVGData.h"
 
 FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState &apvts, juce::String filterId,
-								 juce::String cutoffId, juce::String resonanceId)
+								 juce::String cutoffId, juce::String resonanceId, juce::String name)
 	: filterType(apvts, filterId),
-	  cutoff(apvts, cutoffId, SVGData{BinaryData::filterCutoff_svg, BinaryData::filterCutoff_svgSize}),
-	  resonance(apvts, resonanceId, SVGData{BinaryData::filterResonance_svg, BinaryData::filterResonance_svgSize})
+	  cutoff(apvts, cutoffId, SVGData{BinaryData::filterCutoff_svg, BinaryData::filterCutoff_svgSize},
+			 IconSliderDirection::column),
+	  resonance(apvts, resonanceId, SVGData{BinaryData::filterResonance_svg, BinaryData::filterResonance_svgSize},
+				IconSliderDirection::column)
 {
 	addAndMakeVisible(filterType);
+	cutoff.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
 	addAndMakeVisible(cutoff);
+	resonance.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
 	addAndMakeVisible(resonance);
+	setText(name);
 }
 
 void FilterComponent::resized()
 {
 	juce::FlexBox fbSliders;
-	fbSliders.flexDirection = juce::FlexBox::Direction::column;
+	fbSliders.flexDirection = juce::FlexBox::Direction::row;
 	fbSliders.items.add(juce::FlexItem(cutoff).withFlex(1.0f));
 	fbSliders.items.add(juce::FlexItem(resonance).withFlex(1.0f));
 
 	juce::FlexBox fb;
 
-	fb.flexDirection = juce::FlexBox::Direction::row;
+	fb.flexDirection = juce::FlexBox::Direction::column;
 
-	fb.items.add(juce::FlexItem(filterType).withFlex(1.0f));
-	fb.items.add(juce::FlexItem(fbSliders).withFlex(4.0f));
+	fb.items.add(juce::FlexItem(filterType).withFlex(0.2f).withMaxHeight(50).withMargin({20, 10, 20, 10}));
+	fb.items.add(juce::FlexItem(fbSliders).withFlex(1.0f));
 
 	fb.performLayout(getLocalBounds());
 }

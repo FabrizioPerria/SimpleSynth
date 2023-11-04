@@ -1,5 +1,10 @@
 #include "SynthVoice.h"
 #include "SynthSound.h"
+#include "data/EnvelopeData.h"
+
+SynthVoice::SynthVoice(EnvelopeData &envelopeData) : envelope(envelopeData)
+{
+}
 
 bool SynthVoice::canPlaySound(SynthesiserSound *sound)
 {
@@ -38,15 +43,9 @@ void SynthVoice::controllerMoved(int controllerNumber, int newControllerValue)
 	juce::ignoreUnused(newControllerValue);
 }
 
-void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numOutputChannels)
+void SynthVoice::prepareToPlay(juce::dsp::ProcessSpec &spec)
 {
-	dsp::ProcessSpec spec;
-	spec.sampleRate = sampleRate;
-	spec.maximumBlockSize = ( uint32_t ) samplesPerBlock;
-	spec.numChannels = ( uint32_t ) numOutputChannels;
-
 	oscillator.prepareToPlay(spec);
-	envelope.preparetoPlay(spec);
 
 	isPrepared = true;
 }
@@ -65,7 +64,6 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
 
 	juce::dsp::AudioBlock<float> audioBlock{voiceBuffer};
 	oscillator.getNextAudioBlock(audioBlock);
-	envelope.process(voiceBuffer);
 
 	for (auto channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
 	{
@@ -77,18 +75,10 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
 	}
 }
 
-void SynthVoice::updateEnvelope(const float attack, const float decay, const float sustain, const float release)
-{
-	envelope.update(attack, decay, sustain, release);
-}
-
 void SynthVoice::updateOscillator(const OscillatorType oscillatorType, const float level, const float lfoFreq,
-								  const float lfoDepth, const FilterType filterType, const float filterCutoff,
-								  const float filterResonance)
+								  const float lfoDepth)
 {
 	oscillator.setOscillatorType(oscillatorType);
 	oscillator.setOscillatorLevel(level);
 	oscillator.setLFO(lfoFreq, lfoDepth);
-	oscillator.setFilterType(filterType);
-	oscillator.setFilter(filterCutoff, filterResonance);
 }
