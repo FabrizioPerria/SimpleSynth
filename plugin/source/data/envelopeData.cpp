@@ -1,17 +1,40 @@
 #include "data/EnvelopeData.h"
 
+EnvelopeData::EnvelopeData()
+{
+}
+
 void EnvelopeData::update(const float attack, const float decay, const float sustain, const float release)
 {
-	envelopeParameters.attack = attack;
-	envelopeParameters.decay = decay;
-	envelopeParameters.sustain = sustain;
-	envelopeParameters.release = release;
-
-	setParameters(envelopeParameters);
+	envelope.setParameters(juce::ADSR::Parameters{attack, decay, sustain, release});
 }
 
 void EnvelopeData::preparetoPlay(const juce::dsp::ProcessSpec &spec)
 {
-	setSampleRate(spec.sampleRate);
-	reset();
+	envelope.setSampleRate(spec.sampleRate);
+	envelope.reset();
+
+	isPrepared = true;
+}
+
+void EnvelopeData::process(juce::AudioBuffer<float> &audioBuffer)
+{
+	jassert(isPrepared);
+
+	envelope.applyEnvelopeToBuffer(audioBuffer, 0, audioBuffer.getNumSamples());
+}
+
+void EnvelopeData::noteOn()
+{
+	envelope.noteOn();
+}
+
+void EnvelopeData::noteOff()
+{
+	envelope.noteOff();
+}
+
+bool EnvelopeData::isActive()
+{
+	return envelope.isActive();
 }

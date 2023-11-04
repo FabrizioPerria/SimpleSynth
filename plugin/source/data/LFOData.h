@@ -14,4 +14,6 @@ class LFOData
 	juce::dsp::Oscillator<float> lfo;
 	float lfoDepth;
 	float lfoFreq;
+
+	bool isPrepared;
 };

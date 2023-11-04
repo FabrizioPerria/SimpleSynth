@@ -1,6 +1,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "data/FilterData.h"
 #include "utils/OscillatorType.h"
 #include "utils/FilterType.h"
 #include "data/LFOData.h"
@@ -22,8 +23,11 @@ class OscillatorData : public juce::dsp::Oscillator<float>
   private:
 	juce::dsp::Gain<float> gain;
 	LFOData lfo;
+	FilterData filter;
 
 	int currentNote;
+
+	bool isPrepared;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscillatorData)
 };

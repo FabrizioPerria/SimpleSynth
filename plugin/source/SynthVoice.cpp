@@ -54,6 +54,7 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numOu
 void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
 {
 	jassert(isPrepared);
+
 	if (!isVoiceActive())
 	{
 		return;
@@ -64,7 +65,7 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
 
 	juce::dsp::AudioBlock<float> audioBlock{voiceBuffer};
 	oscillator.getNextAudioBlock(audioBlock);
-	envelope.applyEnvelopeToBuffer(voiceBuffer, 0, voiceBuffer.getNumSamples());
+	envelope.process(voiceBuffer);
 
 	for (auto channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
 	{

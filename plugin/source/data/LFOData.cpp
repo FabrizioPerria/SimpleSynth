@@ -11,6 +11,8 @@ void LFOData::prepare(juce::dsp::ProcessSpec &spec)
 {
 	lfo.initialise(OscillatorType::getFunction(OscillatorType::SINE));
 	lfo.prepare(spec);
+
+	isPrepared = true;
 }
 
 float LFOData::getFrequency()
@@ -20,6 +22,8 @@ float LFOData::getFrequency()
 
 void LFOData::process(juce::dsp::AudioBlock<float> &audioBlock)
 {
+	jassert(isPrepared);
+
 	for (auto channel = 0; channel < ( int ) audioBlock.getNumChannels(); ++channel)
 	{
 		for (auto sample = 0; sample < ( int ) audioBlock.getNumSamples(); ++sample)

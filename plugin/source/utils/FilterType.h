@@ -72,6 +72,22 @@ class FilterType
 		return filterTypeStringArray;
 	}
 
+	static juce::dsp::StateVariableTPTFilterType getFilterType(FilterType::Value filterType)
+	{
+		switch (filterType)
+		{
+		case FilterType::LOWPASS:
+			return juce::dsp::StateVariableTPTFilterType::lowpass;
+		case FilterType::BANDPASS:
+			return juce::dsp::StateVariableTPTFilterType::bandpass;
+		case FilterType::HIGHPASS:
+			return juce::dsp::StateVariableTPTFilterType::highpass;
+		default:
+			jassertfalse;
+			return juce::dsp::StateVariableTPTFilterType::lowpass;
+		}
+	}
+
 	FilterType() = delete;
 
 	constexpr FilterType(Value aType) : value(aType)

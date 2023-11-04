@@ -1,4 +1,5 @@
 #include "data/OscillatorData.h"
+#include "juce_core/system/juce_PlatformDefs.h"
 #include "utils/FilterType.h"
 
 OscillatorData::OscillatorData() : currentNote(0)
@@ -16,6 +17,9 @@ void OscillatorData::prepareToPlay(juce::dsp::ProcessSpec &spec)
 	prepare(spec);
 	gain.prepare(spec);
 	lfo.prepare(spec);
+	filter.prepare(spec);
+
+	isPrepared = true;
 }
 
 void OscillatorData::setOscillatorFrequency(int midiNoteNumber)
@@ -27,8 +31,11 @@ void OscillatorData::setOscillatorFrequency(int midiNoteNumber)
 
 void OscillatorData::getNextAudioBlock(juce::dsp::AudioBlock<float> &audioBlock)
 {
+	jassert(isPrepared);
+
 	lfo.process(audioBlock);
 	process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
+	filter.process(audioBlock);
 	gain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
 }
 
@@ -45,8 +52,10 @@ void OscillatorData::setLFO(const float frequency, const float depth)
 
 void OscillatorData::setFilterType(const FilterType type)
 {
+	filter.setFilterType(type);
 }
 
 void OscillatorData::setFilter(const float cutoff, const float resonance)
 {
+	filter.setParameters(cutoff, resonance);
 }
