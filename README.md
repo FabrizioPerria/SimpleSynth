@@ -1,5 +1,16 @@
 # SimpleSynth
-Simple synth **inspired** by [TAP's Youtube Synth series](https://www.youtube.com/playlist?list=PLLgJJsrdwhPwJimt5vtHtNmu63OucmPck). 
+Simple polyphonic synth **inspired** by [TAP's Youtube Synth series](https://www.youtube.com/playlist?list=PLLgJJsrdwhPwJimt5vtHtNmu63OucmPck). 
+It provides:
+ - 3 voices, each containing an oscillator and an amplitude modulator. Oscillators can play:
+   - Sine wave
+   - square wave
+   - sawtooth wave
+   - triangle wave
+ - a common filter that can be set as:
+   - high pass
+   - low pass
+   - bandpass
+ - a common envelope module
 
 This is developed for educational purposes:
  - learn JUCE programming
