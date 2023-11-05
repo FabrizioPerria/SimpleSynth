@@ -8,25 +8,20 @@ void FilterData::prepareToPlay(juce::dsp::ProcessSpec &spec)
 	isPrepared = true;
 }
 
-void FilterData::process(juce::dsp::AudioBlock<float> &audioBlock)
+void FilterData::process(juce::AudioBuffer<float> &buffer)
 {
 	jassert(isPrepared);
+
+	juce::dsp::AudioBlock<float> audioBlock(buffer);
 
 	filter.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
 }
 
-void FilterData::setParameters(const float cutoff, const float resonance)
-{
-	filter.setCutoffFrequency(cutoff);
-	filter.setResonance(resonance);
-}
-
-void FilterData::setFilterType(const FilterType type)
+void FilterData::setParameters(const FilterType type, const float cutoff, const float resonance, const float mod)
 {
 	filter.setType(FilterType::getFilterType(type));
-}
-
-void FilterData::reset()
-{
-	filter.reset();
+	auto fMod = cutoff * mod;
+	fMod = std::clamp(fMod, 20.0f, 20000.0f);
+	filter.setCutoffFrequency(fMod);
+	filter.setResonance(resonance);
 }

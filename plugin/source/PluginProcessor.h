@@ -4,6 +4,7 @@
 #include "SynthVoice.h"
 #include "data/EnvelopeData.h"
 #include "data/FilterData.h"
+#include "data/GainData.h"
 
 //==============================================================================
 class AudioPluginAudioProcessor : public juce::AudioProcessor
@@ -51,14 +52,13 @@ class AudioPluginAudioProcessor : public juce::AudioProcessor
 
   private:
 	juce::Synthesiser synth;
-	EnvelopeData envelope;
-	FilterData filter;
-	juce::dsp::Gain<float> outputGain;
+	GainData outputGain;
 	juce::AudioProcessorValueTreeState apvts;
 
 	void setupOscillator(SynthVoice *voice, const int voiceIndex);
-	void setupEnvelope();
-	void setupFilter();
+	void setupEnvelope(SynthVoice *voice);
+	void setupFilter(SynthVoice *voice);
+	void setupModEnvelope(SynthVoice *voice);
 	void setupOutputGain();
 
 	void setupOscillatorVoiceParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout);

@@ -12,6 +12,7 @@ class EnvelopeData
 	void preparetoPlay(const juce::dsp::ProcessSpec &spec);
 	void update(const float attack, const float decay, const float sustain, const float release);
 	void process(juce::AudioBuffer<float> &audioBuffer);
+	float getNextSample();
 
   private:
 	juce::ADSR envelope;

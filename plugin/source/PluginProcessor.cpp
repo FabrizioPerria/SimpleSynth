@@ -21,7 +21,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
 {
 	synth.addSound(new SynthSound());
 	for (auto voices = 0; voices < NUM_VOICES; voices++)
-		synth.addVoice(new SynthVoice(envelope));
+		synth.addVoice(new SynthVoice());
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -111,8 +111,7 @@ void AudioPluginAudioProcessor::prepareToPlay(double sampleRate, int samplesPerB
 			voice->prepareToPlay(spec);
 		}
 	}
-	envelope.preparetoPlay(spec);
-	filter.prepareToPlay(spec);
+	outputGain.prepareToPlay(spec);
 }
 
 void AudioPluginAudioProcessor::releaseResources()
@@ -145,25 +144,6 @@ bool AudioPluginAudioProcessor::isBusesLayoutSupported(const BusesLayout &layout
 #endif
 }
 
-void AudioPluginAudioProcessor::setupEnvelope()
-{
-	auto attack = apvts.getRawParameterValue("ATTACK")->load();
-	auto decay = apvts.getRawParameterValue("DECAY")->load();
-	auto sustain = apvts.getRawParameterValue("SUSTAIN")->load();
-	auto release = apvts.getRawParameterValue("RELEASE")->load();
-	envelope.update(attack, decay, sustain, release);
-}
-
-void AudioPluginAudioProcessor::setupFilter()
-{
-	auto filterType = FilterType::fromInt(static_cast<int>(apvts.getRawParameterValue("FILTER_TYPE")->load()));
-	auto filterCutoff = apvts.getRawParameterValue("FILTER_CUTOFF")->load();
-	auto filterResonance = apvts.getRawParameterValue("FILTER_RESONANCE")->load();
-
-	filter.setFilterType(filterType);
-	filter.setParameters(filterCutoff, filterResonance);
-}
-
 void AudioPluginAudioProcessor::setupOscillator(SynthVoice *voice, const int voiceIndex)
 {
 	auto type = OscillatorType::fromInt(
@@ -174,10 +154,37 @@ void AudioPluginAudioProcessor::setupOscillator(SynthVoice *voice, const int voi
 	voice->updateOscillator(type, level, lfoFreq, lfoDepth);
 }
 
+void AudioPluginAudioProcessor::setupEnvelope(SynthVoice *voice)
+{
+	auto attack = apvts.getRawParameterValue("ATTACK")->load();
+	auto decay = apvts.getRawParameterValue("DECAY")->load();
+	auto sustain = apvts.getRawParameterValue("SUSTAIN")->load();
+	auto release = apvts.getRawParameterValue("RELEASE")->load();
+	voice->updateAmpEnvelope(attack, decay, sustain, release);
+}
+
+void AudioPluginAudioProcessor::setupFilter(SynthVoice *voice)
+{
+	auto filterType = FilterType::fromInt(static_cast<int>(apvts.getRawParameterValue("FILTER_TYPE")->load()));
+	auto filterCutoff = apvts.getRawParameterValue("FILTER_CUTOFF")->load();
+	auto filterResonance = apvts.getRawParameterValue("FILTER_RESONANCE")->load();
+
+	voice->updateFilter(filterType, filterCutoff, filterResonance);
+}
+
+void AudioPluginAudioProcessor::setupModEnvelope(SynthVoice *voice)
+{
+	auto attack = apvts.getRawParameterValue("FILTER_ATTACK")->load();
+	auto decay = apvts.getRawParameterValue("FILTER_DECAY")->load();
+	auto sustain = apvts.getRawParameterValue("FILTER_SUSTAIN")->load();
+	auto release = apvts.getRawParameterValue("FILTER_RELEASE")->load();
+	voice->updateModEnvelope(attack, decay, sustain, release);
+}
+
 void AudioPluginAudioProcessor::setupOutputGain()
 {
 	auto gainValue = apvts.getRawParameterValue("OUTPUT_GAIN")->load();
-	outputGain.setGainDecibels(gainValue);
+	outputGain.setGain(gainValue);
 }
 
 void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
@@ -195,18 +202,16 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
 	{
 		if (auto voice = dynamic_cast<SynthVoice *>(synth.getVoice(i)))
 		{
-			setupEnvelope();
 			setupOscillator(voice, i);
-			setupFilter();
+			setupEnvelope(voice);
+			setupFilter(voice);
+			setupModEnvelope(voice);
 			setupOutputGain();
 		}
 	}
 
 	synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-	juce::dsp::AudioBlock<float> audioBlock{buffer};
-	filter.process(audioBlock);
-	envelope.process(buffer);
-	outputGain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
+	outputGain.process(buffer);
 }
 
 //==============================================================================

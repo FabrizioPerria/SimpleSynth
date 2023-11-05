@@ -26,6 +26,7 @@ void EnvelopeData::process(juce::AudioBuffer<float> &audioBuffer)
 
 void EnvelopeData::noteOn()
 {
+	envelope.reset();
 	envelope.noteOn();
 }
 
@@ -37,4 +38,9 @@ void EnvelopeData::noteOff()
 bool EnvelopeData::isActive()
 {
 	return envelope.isActive();
+}
+
+float EnvelopeData::getNextSample()
+{
+	return envelope.getNextSample();
 }

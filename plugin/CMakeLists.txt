@@ -51,6 +51,7 @@ target_sources(${PROJECT_NAME}
         source/data/OscillatorData.cpp
         source/data/LFOData.cpp
         source/data/FilterData.cpp
+        source/data/GainData.cpp
         source/ui/EnvelopeComponent.cpp
         source/ui/FilterComponent.cpp
         source/ui/FilterPickerComponent.cpp

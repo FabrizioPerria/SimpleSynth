@@ -1,6 +1,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "data/GainData.h"
 #include "utils/OscillatorType.h"
 #include "data/LFOData.h"
 
@@ -17,7 +18,7 @@ class OscillatorData : public juce::dsp::Oscillator<float>
 	void setLFO(const float frequency, const float depth);
 
   private:
-	juce::dsp::Gain<float> gain;
+	GainData gain;
 	LFOData lfo;
 
 	int currentNote;
