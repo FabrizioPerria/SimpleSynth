@@ -111,6 +111,7 @@ void AudioPluginAudioProcessor::prepareToPlay(double sampleRate, int samplesPerB
 			voice->prepareToPlay(spec);
 		}
 	}
+	reverb.prepareToPlay(spec);
 	outputGain.prepareToPlay(spec);
 }
 
@@ -181,6 +182,15 @@ void AudioPluginAudioProcessor::setupModEnvelope(SynthVoice *voice)
 	voice->updateModEnvelope(attack, decay, sustain, release);
 }
 
+void AudioPluginAudioProcessor::setupReverb()
+{
+	auto dryWet = apvts.getRawParameterValue("REVERB_DRYWET")->load();
+	auto width = apvts.getRawParameterValue("REVERB_WIDTH")->load();
+	auto damp = apvts.getRawParameterValue("REVERB_DAMP")->load();
+	auto roomSize = apvts.getRawParameterValue("REVERB_ROOMSIZE")->load();
+	reverb.update(dryWet, width, damp, roomSize);
+}
+
 void AudioPluginAudioProcessor::setupOutputGain()
 {
 	auto gainValue = apvts.getRawParameterValue("OUTPUT_GAIN")->load();
@@ -206,11 +216,13 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
 			setupEnvelope(voice);
 			setupFilter(voice);
 			setupModEnvelope(voice);
-			setupOutputGain();
 		}
 	}
+	setupReverb();
+	setupOutputGain();
 
 	synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+	reverb.process(buffer);
 	outputGain.process(buffer);
 }
 
