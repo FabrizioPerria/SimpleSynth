@@ -7,11 +7,12 @@ It provides:
    - square wave
    - sawtooth wave
    - triangle wave
+ - a common envelope module
  - a common filter that can be set as:
    - high pass
    - low pass
    - bandpass
- - a common envelope module
+ - a simple room reverb
 
 This is developed for educational purposes:
  - learn JUCE programming
