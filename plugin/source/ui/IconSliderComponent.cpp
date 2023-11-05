@@ -17,6 +17,7 @@ IconSliderComponent::IconSliderComponent(juce::AudioProcessorValueTreeState &apv
 	icon.setImages(drawable.get());
 	icon.setClickingTogglesState(false);
 	icon.setToggleState(false, juce::dontSendNotification);
+	icon.setSize(20, 20);
 	addAndMakeVisible(icon);
 }
 
@@ -24,9 +25,10 @@ void IconSliderComponent::resized()
 {
 	juce::FlexBox fb;
 	fb.flexDirection = direction;
+	fb.flexWrap = juce::FlexBox::Wrap::noWrap;
 
-	fb.items.add(juce::FlexItem(icon).withFlex(0.2f).withMaxHeight(20).withMaxWidth(20));
-	/* fb.items.add(juce::FlexItem(slider).withFlex(1.0f)); */
+	fb.items.add(juce::FlexItem(icon).withFlex(0, 0, 20));
+	fb.items.add(juce::FlexItem(slider).withFlex(1.0f));
 
 	fb.performLayout(getLocalBounds().reduced(10));
 }
