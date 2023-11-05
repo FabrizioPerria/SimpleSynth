@@ -25,8 +25,8 @@ void IconSliderComponent::resized()
 	juce::FlexBox fb;
 	fb.flexDirection = direction;
 
-	fb.items.add(juce::FlexItem(icon).withFlex(0.1f));
-	fb.items.add(juce::FlexItem(slider).withFlex(1.0f));
+	fb.items.add(juce::FlexItem(icon).withFlex(0.2f).withMaxHeight(20).withMaxWidth(20));
+	/* fb.items.add(juce::FlexItem(slider).withFlex(1.0f)); */
 
 	fb.performLayout(getLocalBounds().reduced(10));
 }

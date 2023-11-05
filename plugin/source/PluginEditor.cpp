@@ -45,14 +45,14 @@ void AudioPluginAudioProcessorEditor::resized()
 	FlexBox filterAndEnvelope;
 	filterAndEnvelope.flexDirection = FlexBox::Direction::column;
 
-	filterAndEnvelope.items.add(FlexItem(filterComponent).withFlex(1.0f).withMargin(10));
-	filterAndEnvelope.items.add(FlexItem(envelopeComponent).withFlex(1.0f).withMargin(10));
+	filterAndEnvelope.items.add(FlexItem(envelopeComponent).withFlex(1.0f));
+	filterAndEnvelope.items.add(FlexItem(filterComponent).withFlex(2.0f));
 
 	FlexBox fb;
 	fb.flexDirection = FlexBox::Direction::row;
 
 	fb.items.add(FlexItem(oscillators).withFlex(1.0f));
-	fb.items.add(FlexItem(filterAndEnvelope).withFlex(1.0f));
+	fb.items.add(FlexItem(filterAndEnvelope).withFlex(1.0f).withMargin(10));
 	fb.items.add(FlexItem(gainComponent).withFlex(0.2f).withMargin(10));
 
 	fb.performLayout(getLocalBounds());

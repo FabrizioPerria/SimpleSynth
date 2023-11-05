@@ -299,6 +299,14 @@ void AudioPluginAudioProcessor::setupFilterParameters(juce::AudioProcessorValueT
 																200.0f));
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"FILTER_RESONANCE", 1}, "Filter Resonance",
 																NormalisableRange<float>{1.0f, 10.0f, 0.1f}, 1.0f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"FILTER_ATTACK", 1}, "Filter Attack",
+																NormalisableRange<float>{0.1f, 1.0f}, 0.8f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"FILTER_DECAY", 1}, "Filter Decay",
+																NormalisableRange<float>{0.1f, 1.0f}, 0.8f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"FILTER_SUSTAIN", 1}, "Filter Sustain",
+																NormalisableRange<float>{0.1f, 1.0f}, 1.0f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"FILTER_RELEASE", 1}, "Filter Release",
+																NormalisableRange<float>{0.1f, 3.0f}, 1.5f));
 }
 
 void AudioPluginAudioProcessor::setupOutputGainParameters(

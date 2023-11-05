@@ -32,10 +32,10 @@ void EnvelopeComponent::resized()
 
 	fb.flexDirection = juce::FlexBox::Direction::row;
 
-	fb.items.add(FlexItem(attackSlider).withFlex(1.0f).withMargin(10));
-	fb.items.add(FlexItem(decaySlider).withFlex(1.0f).withMargin(10));
-	fb.items.add(FlexItem(sustainSlider).withFlex(1.0f).withMargin(10));
-	fb.items.add(FlexItem(releaseSlider).withFlex(1.0f).withMargin(10));
+	fb.items.add(FlexItem(attackSlider).withFlex(1.0f));
+	fb.items.add(FlexItem(decaySlider).withFlex(1.0f));
+	fb.items.add(FlexItem(sustainSlider).withFlex(1.0f));
+	fb.items.add(FlexItem(releaseSlider).withFlex(1.0f));
 
 	fb.performLayout(getLocalBounds().reduced(10));
 }

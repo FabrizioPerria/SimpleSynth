@@ -46,8 +46,6 @@ CPMAddPackage(
         "gtest_force_shared_crt ON"
 )
 
-enable_testing()
-
 if (MSVC)
     add_compile_options(/Wall /WX)
 else()

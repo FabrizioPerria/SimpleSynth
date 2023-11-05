@@ -8,13 +8,15 @@ FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState &apvts, juce
 	  cutoff(apvts, cutoffId, SVGData{BinaryData::filterCutoff_svg, BinaryData::filterCutoff_svgSize},
 			 IconSliderDirection::column),
 	  resonance(apvts, resonanceId, SVGData{BinaryData::filterResonance_svg, BinaryData::filterResonance_svgSize},
-				IconSliderDirection::column)
+				IconSliderDirection::column),
+	  envelope(apvts, "FILTER_ATTACK", "FILTER_DECAY", "FILTER_SUSTAIN", "FILTER_RELEASE", "")
 {
 	addAndMakeVisible(filterType);
 	cutoff.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
 	addAndMakeVisible(cutoff);
 	resonance.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
 	addAndMakeVisible(resonance);
+	addAndMakeVisible(envelope);
 	setText(name);
 }
 
@@ -29,8 +31,9 @@ void FilterComponent::resized()
 
 	fb.flexDirection = juce::FlexBox::Direction::column;
 
-	fb.items.add(juce::FlexItem(filterType).withFlex(0.2f).withMaxHeight(50).withMargin({20, 10, 20, 10}));
+	fb.items.add(juce::FlexItem(filterType).withFlex(0.2f).withMaxHeight(50).withMargin(10));
 	fb.items.add(juce::FlexItem(fbSliders).withFlex(1.0f));
+	fb.items.add(juce::FlexItem(envelope).withFlex(1.0f));
 
 	fb.performLayout(getLocalBounds());
 }
