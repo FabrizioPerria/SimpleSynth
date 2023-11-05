@@ -32,6 +32,9 @@ juce_add_binary_data(BinaryData SOURCES
     resources/square.svg
     resources/triangle.svg
     resources/volume.svg
+    resources/wetdry.svg
+    resources/width.svg
+    resources/room.svg
 )
 
 get_target_property(juce_library_code ${PROJECT_NAME} JUCE_GENERATED_SOURCES_DIRECTORY)
@@ -55,6 +58,7 @@ target_sources(${PROJECT_NAME}
         source/ui/EnvelopeComponent.cpp
         source/ui/FilterComponent.cpp
         source/ui/FilterPickerComponent.cpp
+        source/ui/ReverbComponent.cpp
         source/ui/GainComponent.cpp
         source/ui/IconSliderComponent.cpp
         source/ui/LFOComponent.cpp

@@ -62,8 +62,10 @@ class AudioPluginAudioProcessor : public juce::AudioProcessor
 	void setupOutputGain();
 
 	void setupOscillatorVoiceParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout);
-	void setupEnvelopeParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout);
+	void setupAmpEnvelopeParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout);
 	void setupFilterParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout);
+	void setupModEnvelopeParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout);
+	void setupReverbParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout);
 	void setupOutputGainParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout);
 
 	//==============================================================================

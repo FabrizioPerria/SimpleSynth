@@ -174,10 +174,10 @@ void AudioPluginAudioProcessor::setupFilter(SynthVoice *voice)
 
 void AudioPluginAudioProcessor::setupModEnvelope(SynthVoice *voice)
 {
-	auto attack = apvts.getRawParameterValue("FILTER_ATTACK")->load();
-	auto decay = apvts.getRawParameterValue("FILTER_DECAY")->load();
-	auto sustain = apvts.getRawParameterValue("FILTER_SUSTAIN")->load();
-	auto release = apvts.getRawParameterValue("FILTER_RELEASE")->load();
+	auto attack = apvts.getRawParameterValue("MOD_ATTACK")->load();
+	auto decay = apvts.getRawParameterValue("MOD_DECAY")->load();
+	auto sustain = apvts.getRawParameterValue("MOD_SUSTAIN")->load();
+	auto release = apvts.getRawParameterValue("MOD_RELEASE")->load();
 	voice->updateModEnvelope(attack, decay, sustain, release);
 }
 
@@ -254,8 +254,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 	juce::AudioProcessorValueTreeState::ParameterLayout paramLayout;
 
 	setupOscillatorVoiceParameters(paramLayout);
-	setupEnvelopeParameters(paramLayout);
+	setupAmpEnvelopeParameters(paramLayout);
 	setupFilterParameters(paramLayout);
+	setupModEnvelopeParameters(paramLayout);
+	setupReverbParameters(paramLayout);
 	setupOutputGainParameters(paramLayout);
 
 	return paramLayout;
@@ -282,7 +284,7 @@ void AudioPluginAudioProcessor::setupOscillatorVoiceParameters(
 	}
 }
 
-void AudioPluginAudioProcessor::setupEnvelopeParameters(
+void AudioPluginAudioProcessor::setupAmpEnvelopeParameters(
 	juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout)
 {
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"ATTACK", 1}, "Attack",
@@ -304,14 +306,31 @@ void AudioPluginAudioProcessor::setupFilterParameters(juce::AudioProcessorValueT
 																200.0f));
 	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"FILTER_RESONANCE", 1}, "Filter Resonance",
 																NormalisableRange<float>{1.0f, 10.0f, 0.1f}, 1.0f));
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"FILTER_ATTACK", 1}, "Filter Attack",
+}
+
+void AudioPluginAudioProcessor::setupModEnvelopeParameters(
+	juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout)
+{
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"MOD_ATTACK", 1}, "Filter Attack",
 																NormalisableRange<float>{0.1f, 1.0f}, 0.8f));
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"FILTER_DECAY", 1}, "Filter Decay",
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"MOD_DECAY", 1}, "Filter Decay",
 																NormalisableRange<float>{0.1f, 1.0f}, 0.8f));
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"FILTER_SUSTAIN", 1}, "Filter Sustain",
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"MOD_SUSTAIN", 1}, "Filter Sustain",
 																NormalisableRange<float>{0.1f, 1.0f}, 1.0f));
-	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"FILTER_RELEASE", 1}, "Filter Release",
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"MOD_RELEASE", 1}, "Filter Release",
 																NormalisableRange<float>{0.1f, 3.0f}, 1.5f));
+}
+
+void AudioPluginAudioProcessor::setupReverbParameters(juce::AudioProcessorValueTreeState::ParameterLayout &paramLayout)
+{
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"REVERB_DRYWET", 1}, "Reverb Dry/Wet",
+																NormalisableRange<float>{0.0f, 1.0f, 0.01f}, 0.5f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"REVERB_WIDTH", 1}, "Reverb Width",
+																NormalisableRange<float>{0.0f, 1.0f, 0.01f}, 0.5f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"REVERB_DAMP", 1}, "Reverb Damp",
+																NormalisableRange<float>{0.0f, 1.0f, 0.01f}, 0.5f));
+	paramLayout.add(std::make_unique<juce::AudioParameterFloat>(ParameterID{"REVERB_ROOMSIZE", 1}, "Reverb Room Size",
+																NormalisableRange<float>{0.0f, 1.0f, 0.01f}, 0.5f));
 }
 
 void AudioPluginAudioProcessor::setupOutputGainParameters(

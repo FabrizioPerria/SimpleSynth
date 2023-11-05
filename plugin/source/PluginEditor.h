@@ -5,6 +5,7 @@
 #include "ui/OscillatorComponent.h"
 #include "ui/GainComponent.h"
 #include "ui/FilterComponent.h"
+#include "ui/ReverbComponent.h"
 
 //==============================================================================
 class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
@@ -25,8 +26,10 @@ class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
 	OscillatorComponent oscillator0;
 	OscillatorComponent oscillator1;
 	OscillatorComponent oscillator2;
-	EnvelopeComponent envelopeComponent;
+	EnvelopeComponent ampEnvelopeComponent;
 	FilterComponent filterComponent;
+	EnvelopeComponent modEnvelopeComponent;
+	ReverbComponent reverbComponent;
 	GainComponent gainComponent;
 
 	std::unique_ptr<juce::TooltipWindow> tooltipWindow;
