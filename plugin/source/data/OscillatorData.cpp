@@ -1,6 +1,7 @@
 #include "data/OscillatorData.h"
 #include "juce_core/system/juce_PlatformDefs.h"
 #include "utils/FilterType.h"
+#include <cassert>
 
 OscillatorData::OscillatorData() : currentNote(0)
 {
@@ -30,7 +31,7 @@ void OscillatorData::setOscillatorFrequency(int midiNoteNumber)
 
 void OscillatorData::getNextAudioBlock(juce::dsp::AudioBlock<float> &audioBlock)
 {
-	jassert(isPrepared);
+	assert(isPrepared);
 
 	lfo.process(audioBlock);
 	process(juce::dsp::ProcessContextReplacing<float>(audioBlock));

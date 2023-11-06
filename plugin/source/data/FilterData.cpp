@@ -1,4 +1,5 @@
 #include "data/FilterData.h"
+#include<cassert>
 
 void FilterData::prepareToPlay(juce::dsp::ProcessSpec &spec)
 {
@@ -10,7 +11,7 @@ void FilterData::prepareToPlay(juce::dsp::ProcessSpec &spec)
 
 void FilterData::process(juce::AudioBuffer<float> &buffer)
 {
-	jassert(isPrepared);
+	assert(isPrepared);
 
 	juce::dsp::AudioBlock<float> audioBlock(buffer);
 

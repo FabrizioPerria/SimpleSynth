@@ -1,5 +1,6 @@
 #include "data/ReverbData.h"
 #include "BinaryData.h"
+#include <cassert>
 
 ReverbData::ReverbData()
 {
@@ -15,7 +16,7 @@ void ReverbData::prepareToPlay(const juce::dsp::ProcessSpec &spec)
 
 void ReverbData::process(juce::AudioBuffer<float> &buffer)
 {
-	jassert(isPrepared);
+	assert(isPrepared);
 
 	juce::dsp::AudioBlock<float> audioBlock(buffer);
 	reverb.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));

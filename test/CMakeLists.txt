@@ -19,6 +19,14 @@ get_target_property(SIMPLE_SYNTH_JUCE_BINARY_DATA_FOLDER SimpleSynth JUCE_BINARY
 target_sources(${PROJECT_NAME}
     PRIVATE
     source/AudioProcessorTest.cpp
+    source/utils/OscillatorType.cpp
+    source/utils/FilterType.cpp
+    source/data/EnvelopeData.cpp
+    source/data/LFOData.cpp
+    source/data/GainData.cpp
+    source/data/FilterData.cpp
+    source/data/OscillatorData.cpp
+    source/data/FilterData.cpp
 )
 ADD_PREFIX_TO_LIST(LIBS_TO_TEST "${CMAKE_CURRENT_SOURCE_DIR}/include" INCLUDE_LIB_DIRS)
 target_include_directories(${PROJECT_NAME}
@@ -33,6 +41,7 @@ target_link_libraries(${PROJECT_NAME}
     PUBLIC
         ${LIBS_TO_TEST}
         GTest::gtest_main
+        gmock
 )
 
 target_compile_definitions(${PROJECT_NAME}

@@ -56,7 +56,7 @@ void SynthVoice::prepareToPlay(juce::dsp::ProcessSpec &spec)
 
 void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
 {
-	jassert(isPrepared);
+	assert(isPrepared);
 
 	if (!isVoiceActive())
 	{

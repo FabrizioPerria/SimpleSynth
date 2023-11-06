@@ -1,4 +1,5 @@
 #include "data/GainData.h"
+#include <cassert>
 
 void GainData::prepareToPlay(juce::dsp::ProcessSpec &spec)
 {
@@ -16,7 +17,7 @@ void GainData::process(juce::AudioBuffer<float> &buffer)
 
 void GainData::process(juce::dsp::AudioBlock<float> &block)
 {
-	jassert(isPrepared);
+	assert(isPrepared);
 	gain.process(juce::dsp::ProcessContextReplacing<float>(block));
 }
 

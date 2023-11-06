@@ -7,7 +7,7 @@ std::unique_ptr<Attachment> makeAttachment(const AudioProcessorValueTreeState &s
 	if (auto *parameter = stateToUse.getParameter(parameterID))
 		return std::make_unique<Attachment>(*parameter, control, stateToUse.undoManager);
 
-	jassertfalse;
+	assert(false);
 	return nullptr;
 }
 

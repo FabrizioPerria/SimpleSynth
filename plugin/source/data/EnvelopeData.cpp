@@ -1,5 +1,5 @@
 #include "data/EnvelopeData.h"
-
+#include <cassert>
 EnvelopeData::EnvelopeData()
 {
 }
@@ -19,7 +19,7 @@ void EnvelopeData::preparetoPlay(const juce::dsp::ProcessSpec &spec)
 
 void EnvelopeData::process(juce::AudioBuffer<float> &audioBuffer)
 {
-	jassert(isPrepared);
+	assert(isPrepared);
 
 	envelope.applyEnvelopeToBuffer(audioBuffer, 0, audioBuffer.getNumSamples());
 }

@@ -3,7 +3,7 @@
 #include "JuceHeader.h"
 #include <functional>
 #include "utils/SVGData.h"
-
+#include <cassert>
 class OscillatorType
 {
   public:
@@ -30,7 +30,7 @@ class OscillatorType
 		case OscillatorType::SAW:
 			return [](float x) { return x / juce::MathConstants<float>::pi; };
 		default:
-			jassertfalse;
+			assert(false);
 			return [](float x) { return x; };
 		}
 	}
@@ -48,7 +48,7 @@ class OscillatorType
 		case OscillatorType::SAW:
 			return "Saw";
 		default:
-			jassertfalse;
+			assert(false);
 			return "Should not happen";
 		}
 	}
@@ -66,7 +66,7 @@ class OscillatorType
 		case OscillatorType::SAW:
 			return SVGData{BinaryData::sawtooth_svg, BinaryData::sawtooth_svgSize};
 		default:
-			jassertfalse;
+			assert(false);
 			/* return "Should not happen"; */
 		}
 	}
@@ -119,7 +119,8 @@ class OscillatorType
 
 	static Value fromInt(int i)
 	{
-		jassert(i >= static_cast<int>(OscillatorType::firstValue) && i <= static_cast<int>(Value::lastValue));
+		auto isIntValid = (i >= static_cast<int>(OscillatorType::firstValue) && i <= static_cast<int>(Value::lastValue));
+		assert(isIntValid);
 		return static_cast<Value>(i);
 	}
 

@@ -2,7 +2,7 @@
 #include <PluginProcessor.h>
 
 namespace audio_plugin_test {
-    TEST(AudioPlugin, Foo)
+    TEST(AudioPlugin, CanInstantiatePlugin)
     {
         AudioPluginAudioProcessor processor {};
         ASSERT_TRUE(true);

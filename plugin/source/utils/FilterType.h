@@ -4,7 +4,7 @@
 #include "JuceHeader.h"
 #include <functional>
 #include "utils/SVGData.h"
-
+#include <cassert>
 class FilterType
 {
   public:
@@ -28,7 +28,7 @@ class FilterType
 		case FilterType::HIGHPASS:
 			return "Highpass";
 		default:
-			jassertfalse;
+			assert(false);
 			return "Should not happen";
 		}
 	}
@@ -44,7 +44,7 @@ class FilterType
 		case FilterType::HIGHPASS:
 			return SVGData{BinaryData::highpass_svg, BinaryData::highpass_svgSize};
 		default:
-			jassertfalse;
+			assert(false);
 			/* return "Should not happen"; */
 		}
 	}
@@ -83,7 +83,7 @@ class FilterType
 		case FilterType::HIGHPASS:
 			return juce::dsp::StateVariableTPTFilterType::highpass;
 		default:
-			jassertfalse;
+			assert(false);
 			return juce::dsp::StateVariableTPTFilterType::lowpass;
 		}
 	}
@@ -113,7 +113,8 @@ class FilterType
 
 	static Value fromInt(int i)
 	{
-		jassert(i >= static_cast<int>(FilterType::firstValue) && i <= static_cast<int>(Value::lastValue));
+		auto isIntValid = i >= static_cast<int>(FilterType::firstValue) && i <= static_cast<int>(Value::lastValue);
+		assert(isIntValid);
 		return static_cast<Value>(i);
 	}
 
